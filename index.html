@@ -4,18 +4,49 @@
 	<meta charset="UTF-8">
 	<title>Movie database</title>
 	<link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<div class="container-fluid mainBody">
-		<div class="navbar topbar">
-			<h3>Hello</h3>
+		<div class="navbar topbar topborder">
+			<div class="row">
+				<div class="col-md-2 topSpacer">
+					<a class="linkstyle home" href="#"><h3>Home</h3></a>
+				</div>
+				<div class="col-md-2 topSpacer">
+					<a class="linkstyle search" href="#"><h3>Search</h3></a>
+				</div>
+				<div class="col-md-2 topSpacer">
+					<a class="linkstyle myMovie" href="#"><h3>My Movies</h3></a>
+				</div>
+			</div>
 		</div>
 		<div class="row rowOrient">
-			<div class="col-md-3 card">
-				<h3>Title</h3>
+			<div class="col-md-3 card topborder">
+				<div class="titlebox">
+					<h3>Title can be really long but will it wrap around?</h3>
+				</div>
 				<p>year</p>
-				<h4>list of actors</h4>
+				<div class="actorbox">
+					<h4>list of actors can be really long but will it wrap around?</h4>
+				</div>
+				<div class="bottomBar">
+					<div class="viewbar">
+						<p>Viewed</p>
+					</div>
+					<div class="ratings">
+						<p>ratings</p>
+					</div>
+				</div>
+				<div class="addRemove">
+					<div class="addButton">
+						<p>add</p>
+					</div>
+					<div class="deleteButton">
+						<p>delete</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
