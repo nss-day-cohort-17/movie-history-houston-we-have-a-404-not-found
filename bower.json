@@ -1,0 +1,21 @@
+{
+  "name": "movie-history-houston-we-have-a-404-not-found",
+  "homepage": "https://github.com/nss-day-cohort-17/movie-history-houston-we-have-a-404-not-found",
+  "authors": [
+    "TSturtledove <roberttortorelli@yahoo.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

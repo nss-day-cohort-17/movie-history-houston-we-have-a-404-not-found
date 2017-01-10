@@ -1,0 +1,23 @@
+
+.mainbody {
+  height: 900px;
+  width: 900px;
+  background-color:  #d0e1e1;
+}
+
+.topbar {
+  width: 100%;
+  background-color:  #b1cdcd;
+  border: 3px solid #b1cfcf;
+}
+
+.card {
+  background-color:  #d0e1e1;
+  margin: 25px 30px;
+  border: 3px solid  #b1cdcd;
+}
+
+.rowOrient {
+  display: flex;
+  justify-content: center;
+}
