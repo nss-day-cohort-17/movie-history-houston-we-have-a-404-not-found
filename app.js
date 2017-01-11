@@ -102,7 +102,7 @@ var data;
 // }
 
 /***************************************************
-	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE) 
+	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
 ****************************************************/
 
 function addMovie() {
@@ -121,7 +121,7 @@ function removeMovie() {
 		moviesAdded.splice(index, 1);
 		console.log(moviesAdded)
 	// } else {
-		
+
 	// }
 }
 
@@ -180,22 +180,22 @@ function searchMovie() {
 };
 
 /*******************************************
-		JQUERY STAR RATING CODE 
+		JQUERY STAR RATING CODE
 ********************************************/
 
-$('#example').barrating('show', {
+$('.example').barrating('show', {
   theme: 'my-awesome-theme',
   onSelect: function(value, text, event) {
     if (typeof(event) !== 'undefined') {
-    	
+
     } else {
-	
+
     }
   }
 });
 
 /*******************************************
-			EVENT LISTENERS 
+			EVENT LISTENERS
 ********************************************/
 
 $('.add').click(addMovie);
