@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="animate.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid mainBody">
@@ -28,6 +29,10 @@
 				</div>
 			</div>
 		</div>
+	<div id="searchView">
+		<input type="text" class="form-control input-sm" maxlength="64" placeholder="Search Movies!" />
+ 		<button type="submit" class="btn btn-primary btn-sm">Search</button>
+	</div>
 		<div class="row rowOrient">
 			<div class="col-xs-4 card topborder">
 				<div class="titlebox">
@@ -42,10 +47,10 @@
 				</div>
 				<div class="bottomBar">
 					<div class="viewbar">
-						<div class="checkbox ">
+						<div id="checkbox ">
 						  <label>
 						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
-						    Option one is enabled
+						   
 						  </label>
 						</div>
 					</div>
@@ -72,12 +77,11 @@
 
 		</div>
 	</div>
-	<div id="searchView">
-		<input type="text" class="form-control input-sm" maxlength="64" placeholder="Search Movies!" />
- 		<button type="submit" class="btn btn-primary btn-sm">Search</button>
-	</div>
-	<div id="myMovies">
 
+	<div id="homeBody"></div>
+	
+	<div id="myMovies">
+		
 	</div>
 
 	<script src="/bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
