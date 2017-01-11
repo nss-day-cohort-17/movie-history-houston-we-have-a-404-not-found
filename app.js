@@ -72,10 +72,10 @@ var data;
 
 // function saveNewUser() {
 // 	var user = {};
-// 	var userName = $('.input').val(); 
+// 	var userName = $('.input').val();
 // 	user[userName] = {
 // 					 movies : moviesAdded
-// 					 }	
+// 					 }
 // 	console.log(user)
 // 	var p2 = new Promise(function(resolve,reject) {
 // 		$.ajax({
@@ -142,10 +142,11 @@ function searchMovie() {
 		})
 	});
 	p.then(function(val) {
-		data = val;
+		data = val;	
 		$('.example').barrating('set', Math.round(data.imdbRating));
 	}).then(function() {
 				$('.rowOrient').html(`<div class="col-xs-3 card topborder">
+
 				<div class="titlebox">
 					<h3>${data.Title}</h3>
 				</div>
