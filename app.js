@@ -18,9 +18,9 @@ $('.search').click(function(e) {
 $('.home').click(function(e) {
 	$('#myMovies').hide();
 	$('#searchView').hide();
-	$('#homeBody').hide();
+	$('#homeBody').show();
 
-	// populatePage();
+	populatePage('https://initial-movies.firebaseio.com/.json');
 });
 
 $('.myMovie').click(function(e) {
@@ -39,19 +39,18 @@ var data;
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
-populatePage();
+populatePage('https://initial-movies.firebaseio.com/.json');
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
 
-function populatePage() {
+function populatePage(url) {
 	var populateHTML = '';
-	// resetMoviesPage();
 		$.ajax({
-			  url: 'https://initial-movies.firebaseio.com/.json'
+			  url: url
 			}).done(function (data) {
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < data.length; i++) {
   			 populateHTML += `<div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${data[i].Title}</h3>
@@ -96,7 +95,7 @@ function populatePage() {
 			</div>
 			`;
   		}
-  		$('.rowOrient').html(populateHTML);
+  		$('#homeBody .rowOrient').html(populateHTML);
 		});
 	}
 
@@ -105,43 +104,43 @@ function populatePage() {
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
-// function saveNewUser() {
-// 	var user = {};
-// 	var userName = $('.input').val();
-// 	user[userName] = {
-// 					 movies : moviesAdded
-// 					 }
-// 	console.log(user)
-// 	var p2 = new Promise(function(resolve,reject) {
-// 		$.ajax({
-// 			type: 'PUT',
-// 			url: 'https://user-enter-luke.firebaseio.com/users.json',
-// 			data: JSON.stringify(user),
-// 			success: function(response) {
-// 				console.log('success!!')
-// 			}
-// 		});
-// 	});
-// }
+function saveNewUser() {
+	var user = {};
+	var userName = $('.input').val();
+	user[userName] = {
+					 movies : moviesAdded
+					 }
+	console.log(user)
+	var p2 = new Promise(function(resolve,reject) {
+		$.ajax({
+			type: 'PUT',
+			url: 'https://user-enter-luke.firebaseio.com/users.json',
+			data: JSON.stringify(user),
+			success: function(response) {
+				console.log('success!!')
+			}
+		});
+	});
+}
 
-// function getUserInfo() {
-// 	var userInput = $('.input').val();
-// 	var myMoviesHTML = ''
-// 	$.ajax({
-// 		type: 'GET',
-// 		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
-// 		success: function(response) {
-// 			for (var i = 0; i < response.movies.length; i++) {
-// 				if (moviesAdded.includes(response.movies[i]) === false) {
-// 					moviesAdded.push(response.movies[i]);
-// 					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
-// 					console.log(moviesAdded)
-// 				}
-// 			}
-// 			$("#area").html(myMoviesHTML);
-// 		}
-// 	});
-// }
+function getUserInfo() {
+	var userInput = $('.input').val();
+	var myMoviesHTML = ''
+	$.ajax({
+		type: 'GET',
+		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
+		success: function(response) {
+			for (var i = 0; i < response.movies.length; i++) {
+				if (moviesAdded.includes(response.movies[i]) === false) {
+					moviesAdded.push(response.movies[i]);
+					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
+					console.log(moviesAdded)
+				}
+			}
+			$("#area").html(myMoviesHTML);
+		}
+	});
+}
 
 /***************************************************
 	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
@@ -169,6 +168,7 @@ function removeMovie() {
 
 function searchMovie() {
 	var movieTitle = $('.input-sm').val();
+
 	p = new Promise(function(resolve,reject) {
 		$.ajax({
 			url: 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=short&r=json'
@@ -180,7 +180,7 @@ function searchMovie() {
 		data = val;
 		// $('.example').barrating('set', Math.round(data.imdbRating));
 	}).then(function() {
-				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
+				$('#searchView .rowOrient').html(`<div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3 class="cardHeaders">${data.Title}</h3>
 				</div>
@@ -252,8 +252,8 @@ $('.add').click(addMovie);
 
 $('.remove').click(removeMovie);
 
-// $('.sign-in').click(getUserInfo);
+$('.sign-in').click(getUserInfo);
 
 $('.btn').click(searchMovie);
 
-// $('.save').click(saveNewUser);
+$('.save').click(saveNewUser);
