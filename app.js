@@ -142,20 +142,23 @@ function searchMovie() {
 		})
 	});
 	p.then(function(val) {
-		data = val;	
+		data = val;
 		$('.example').barrating('set', Math.round(data.imdbRating));
 	}).then(function() {
-				$('.rowOrient').html(`<div class="col-xs-3 card topborder">
+				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
 
 				<div class="titlebox">
-					<h3>${data.Title}</h3>
+					<h3 class="cardHeaders">${data.Title}</h3>
 				</div>
 				<p>${data.Year}</p>
 				<div class="imageBlock">
 					<img class="imageStyle"src="${data.Poster}">
 				</div>
 				<div class="actorbox">
-					<h4>${data.Actors}</h4>
+					<h4 class="cardHeaders">${data.Actors}</h4>
+				</div>
+				<div class="plot">
+					${data.Plot}
 				</div>
 				<div class="bottomBar">
 					<div class="viewbar">
@@ -185,9 +188,7 @@ function searchMovie() {
 					</div>
 				</div>
 			</div>
-			<div id="plot"> 
-				${data.Plot}
-			</div>`)
+			`)
 
 		console.log(data)
 	})
@@ -214,8 +215,8 @@ $('.add').click(addMovie);
 
 $('.remove').click(removeMovie);
 
-$('.sign-in').click(getUserInfo);
+// $('.sign-in').click(getUserInfo);
 
 $('.btn').click(searchMovie);
 
-$('.save').click(saveNewUser);
+// $('.save').click(saveNewUser);
