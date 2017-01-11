@@ -65,10 +65,10 @@ var data;
 
 // function saveNewUser() {
 // 	var user = {};
-// 	var userName = $('.input').val(); 
+// 	var userName = $('.input').val();
 // 	user[userName] = {
 // 					 movies : moviesAdded
-// 					 }	
+// 					 }
 // 	console.log(user)
 // 	var p2 = new Promise(function(resolve,reject) {
 // 		$.ajax({
@@ -136,7 +136,7 @@ function searchMovie() {
 	});
 	p.then(function(val) {
 		data = val;
-		$('.rowOrient').html(`<div class="col-md-3 col-sm-3 col-xs-3 card topborder">
+		$('.rowOrient').html(`<div class="col-xs-4 card topborder">
 				<div class="titlebox">
 					<h3>${data.Title}</h3>
 				</div>
@@ -149,12 +149,11 @@ function searchMovie() {
 						<div class="checkbox">
 						  <label>
 						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
-						    Option one is enabled
 						  </label>
 						</div>
 					</div>
 					<div class="br-wrapper ratings br-theme-bootstrap-stars">
- 						 <select id="example"> 
+ 						 <select class="example">
 						  	<option value=""></option>
 						    <option value="1">1</option>
 						    <option value="2">2</option>
@@ -207,3 +206,29 @@ $('.remove').click(removeMovie);
 $('.btn').click(searchMovie);
 
 // $('.save').click(saveNewUser);
+
+
+
+
+/*******************************************
+			SHOW DIFFERENT PAGES
+********************************************/
+
+// 
+// if (moveAlong) {
+// 	$(".card").hide();
+// 	$("." + nextCard).show();
+// }
+// });
+//
+// /*
+// When the back button clicked, move back a view
+// */
+// $(".card__back").click(function(e) {
+// var previousCard = $(this).attr("previous");
+// $(".card").hide();
+// $("." + previousCard).show();
+// });
+//
+//
+//

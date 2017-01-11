@@ -104,6 +104,7 @@
 .imageStyle{
   width: 70%;
   min-width: 230px;
+  max-height: 50%
 }
 
 .actorbox {
