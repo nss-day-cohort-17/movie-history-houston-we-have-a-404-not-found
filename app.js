@@ -18,7 +18,7 @@ $('.search').click(function(e) {
 $('.home').click(function(e) {
 	$('#myMovies').hide();
 	$('#searchView').hide();
-	$('#homeBody').hide();
+	$('#homeBody').show();
 
 	// populatePage();
 });
@@ -52,7 +52,8 @@ function populatePage() {
 			  url: 'https://initial-movies.firebaseio.com/.json'
 			}).done(function (data) {
 		for (var i = 0; i < 8; i++) {
-  			 populateHTML += `<div class="col-xs-1 card topborder">
+  			 populateHTML += `
+				 <div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${data[i].Title}</h3>
 				</div>
@@ -63,7 +64,7 @@ function populatePage() {
 				<div class="actorbox">
 					<h4>${data[i].Actors}</h4>
 				</div>
-				<div id="plot"> 
+				<div id="plot">
 					${data[i].Plot}
 				</div>
 				<div class="bottomBar">
@@ -94,6 +95,7 @@ function populatePage() {
 					</div>
 				</div>
 			</div>
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 			`;
   		}
   		$('.rowOrient').html(populateHTML);
@@ -194,7 +196,7 @@ function searchMovie() {
 				<div class="plot">
 					${data.Plot}
 				</div>
-				<div id="plot"> 
+				<div id="plot">
 					${data.Plot}
 				</div>
 				<div class="bottomBar">
