@@ -8,31 +8,32 @@ var data;
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
+
 			// populatePage();
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
 
-function populatePage() {
-	for (var i = 0; i < 9; i++) {
-		$.ajax({
-			  "async": true,
-			  "crossDomain": true,
-			  "url": "https://random-movie.herokuapp.com/random",
-			  "method": "GET",
-			  "headers": {
-			    "content-type": "application/json",
-			    "cache-control": "no-cache",
-			    "postman-token": "023e7134-4214-88e4-4f81-f1c8578e668e"
-			  },
-			  "data": "{\n\t\"username\" : \"lukeschuyler\"\n}\n",
-			  "processData": false,
-			}).done(function (random) {
-  			console.log(random);
-		});
-	}
-}
+// function populatePage() {
+// 	for (var i = 0; i < 9; i++) {
+// 		$.ajax({
+// 			  "async": true,
+// 			  "crossDomain": true,
+// 			  "url": "https://random-movie.herokuapp.com/random",
+// 			  "method": "GET",
+// 			  "headers": {
+// 			    "content-type": "application/json",
+// 			    "cache-control": "no-cache",
+// 			    "postman-token": "023e7134-4214-88e4-4f81-f1c8578e668e"
+// 			  },
+// 			  "data": "{\n\t\"username\" : \"lukeschuyler\"\n}\n",
+// 			  "processData": false,
+// 			}).done(function (random) {
+//   			console.log(random);
+// 		});
+// 	}
+// }
 
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
@@ -47,7 +48,7 @@ function saveNewUser() {
 	console.log(user)
 	var p2 = new Promise(function(resolve,reject) {
 		$.ajax({
-			type: 'PATCH',
+			type: 'PUT',
 			url: 'https://user-enter-luke.firebaseio.com/users.json',
 			data: JSON.stringify(user),
 			success: function(response) {
@@ -61,16 +62,19 @@ function getUserInfo() {
 	var userInput = $('.input').val();
 	var myMoviesHTML = ''
 	$.ajax({
-			type: 'GET',
-			url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
-			success: function(response) {
-				console.log(response)
-				for (var i = 0; i < response.movies.length; i++) {
-					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${response.movies[i].Poster}">`
+		type: 'GET',
+		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
+		success: function(response) {
+			for (var i = 0; i < response.movies.length; i++) {
+				if (moviesAdded.includes(response.movies[i]) === false) {
+					moviesAdded.push(response.movies[i]);
+					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
+					console.log(moviesAdded)
 				}
-				$("#area").html(myMoviesHTML)
 			}
-		});
+			$("#area").html(myMoviesHTML);
+		}
+	});
 }
 
 /***************************************************
@@ -78,8 +82,23 @@ function getUserInfo() {
 ****************************************************/
 
 function addMovie() {
-	moviesAdded.push(data);
-	console.log(moviesAdded);
+	// if ($.inArray(data, moviesAdded) < 0) {
+		moviesAdded.push(data);
+		console.log(moviesAdded)
+	// } else {
+	// 	console.log(data)
+	// }
+}
+
+function removeMovie() {
+	var index = moviesAdded.indexOf(data);
+	console.log(index)
+	// if ($.inArray(data, moviesAdded) !== -1) {
+		moviesAdded.splice(index, 1);
+		console.log(moviesAdded)
+	// } else {
+		
+	// }
 }
 
 function searchMovie() {
@@ -93,12 +112,12 @@ function searchMovie() {
 	});
 	p.then(function(val) {
 		data = val;
-		$('h2').html(`<img src="${val.Poster}">`)
-	}).then(function() {
+		$('#area').html(`<img class="animated rotateInDownLeft" src="${val.Poster}">`)
 		console.log(data)
-		$('select').barrating('set', Math.round(data.imdbRating) / 2);
-	})
-}
+	}).then(function() {
+		$('select').barrating('set', Math.round(data.imdbRating));
+	});
+};
 
 /*******************************************
 		JQUERY STAR RATING CODE 
@@ -108,9 +127,9 @@ $('#example').barrating('show', {
   theme: 'my-awesome-theme',
   onSelect: function(value, text, event) {
     if (typeof(event) !== 'undefined') {
-      $('select').barrating('set', data.rating);
+    	
     } else {
-		$('select').barrating('set', data.rating);
+	
     }
   }
 });
@@ -119,10 +138,12 @@ $('#example').barrating('show', {
 			EVENT LISTENERS 
 ********************************************/
 
-$('.sign-in').click(getUserInfo)
+$('.add').click(addMovie);
 
-$('.btn').click(searchMovie)
+$('.remove').click(removeMovie);
 
-$('.save').click(saveNewUser)
+$('.sign-in').click(getUserInfo);
 
-$('.add').click(addMovie)
+$('.btn').click(searchMovie);
+
+$('.save').click(saveNewUser);
