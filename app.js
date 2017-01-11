@@ -1,3 +1,25 @@
+/***************************************************
+				INITIAL HIDES/SHOWS
+****************************************************/
+
+// $('#searchView').hide();
+// $('#myMovies').hide();
+
+
+// $('.search').click(function(e) {
+// 	$('.card').addClass('animated')
+// 	$('.card').addClass('animated')
+// 	setTimeout(function() {
+// 		$('.card').hide();
+// 		$('#searchView').show('slow');
+// 	})
+// });
+
+// $('.home').click(function(e) {
+// 	$('#myMovies').hide();
+// 	$('#searchView').hide();
+// 	// populatePage();
+// })
 
 /***************************************************
 				GLOBAL VARIABLES
@@ -10,13 +32,14 @@ var data;
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
-			// populatePage();
+// populatePage();
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
 
 // function populatePage() {
+// 	resetMoviesPage()
 // 	for (var i = 0; i < 9; i++) {
 // 		$.ajax({
 // 			  "async": true,
@@ -40,43 +63,43 @@ var data;
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
-function saveNewUser() {
-	var user = {};
-	var userName = $('.input').val();
-	user[userName] = {
-					 movies : moviesAdded
-					 }
-	console.log(user)
-	var p2 = new Promise(function(resolve,reject) {
-		$.ajax({
-			type: 'PUT',
-			url: 'https://user-enter-luke.firebaseio.com/users.json',
-			data: JSON.stringify(user),
-			success: function(response) {
-				console.log('success!!')
-			}
-		});
-	});
-}
+// function saveNewUser() {
+// 	var user = {};
+// 	var userName = $('.input').val(); 
+// 	user[userName] = {
+// 					 movies : moviesAdded
+// 					 }	
+// 	console.log(user)
+// 	var p2 = new Promise(function(resolve,reject) {
+// 		$.ajax({
+// 			type: 'PUT',
+// 			url: 'https://user-enter-luke.firebaseio.com/users.json',
+// 			data: JSON.stringify(user),
+// 			success: function(response) {
+// 				console.log('success!!')
+// 			}
+// 		});
+// 	});
+// }
 
-function getUserInfo() {
-	var userInput = $('.input').val();
-	var myMoviesHTML = ''
-	$.ajax({
-		type: 'GET',
-		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
-		success: function(response) {
-			for (var i = 0; i < response.movies.length; i++) {
-				if (moviesAdded.includes(response.movies[i]) === false) {
-					moviesAdded.push(response.movies[i]);
-					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
-					console.log(moviesAdded)
-				}
-			}
-			$("#area").html(myMoviesHTML);
-		}
-	});
-}
+// function getUserInfo() {
+// 	var userInput = $('.input').val();
+// 	var myMoviesHTML = ''
+// 	$.ajax({
+// 		type: 'GET',
+// 		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
+// 		success: function(response) {
+// 			for (var i = 0; i < response.movies.length; i++) {
+// 				if (moviesAdded.includes(response.movies[i]) === false) {
+// 					moviesAdded.push(response.movies[i]);
+// 					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
+// 					console.log(moviesAdded)
+// 				}
+// 			}
+// 			$("#area").html(myMoviesHTML);
+// 		}
+// 	});
+// }
 
 /***************************************************
 	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
@@ -113,11 +136,47 @@ function searchMovie() {
 	});
 	p.then(function(val) {
 		data = val;
-		$('#area').html(`<img class="animated rotateInDownLeft" src="${val.Poster}">`)
+		$('.rowOrient').html(`<div class="col-md-3 col-sm-3 col-xs-3 card topborder">
+				<div class="titlebox">
+					<h3>${data.Title}</h3>
+				</div>
+				<p>${data.Year}</p>
+				<div class="actorbox">
+					<h4>${data.Actors}</h4>
+				</div>
+				<div class="bottomBar">
+					<div class="viewbar">
+						<div class="checkbox">
+						  <label>
+						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
+						    Option one is enabled
+						  </label>
+						</div>
+					</div>
+					<div class="br-wrapper ratings br-theme-bootstrap-stars">
+ 						 <select id="example"> 
+						  	<option value=""></option>
+						    <option value="1">1</option>
+						    <option value="2">2</option>
+						    <option value="3">3</option>
+						    <option value="4">4</option>
+						    <option value="5">5</option>
+						  </select>
+					</div>
+				</div>
+				<div class="addRemove">
+					<div class="addButton">
+						<button class="btn btn-primary">add</button class="btn btn-primary">
+					</div>
+					<div class="deleteButton">
+						<button class="btn btn-primary">delete</button class="btn btn-primary">
+					</div>
+				</div>
+			</div>`)
 		console.log(data)
 	}).then(function() {
 		$('select').barrating('set', Math.round(data.imdbRating));
-	});
+	})
 };
 
 /*******************************************
@@ -143,8 +202,8 @@ $('.add').click(addMovie);
 
 $('.remove').click(removeMovie);
 
-$('.sign-in').click(getUserInfo);
+// $('.sign-in').click(getUserInfo);
 
 $('.btn').click(searchMovie);
 
-$('.save').click(saveNewUser);
+// $('.save').click(saveNewUser);
