@@ -99,7 +99,7 @@ body{
 .titlebox {
   margin: 5px 3px;
   padding: 2px 7px;
-  background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);
+  /*background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);*/
 }
 
 .cardHeaders {
@@ -129,14 +129,14 @@ body{
 .actorbox {
   margin-top: 3px;
   padding: 5px 5px 10px;
-  background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);
+  /*background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);*/
 }
 
 
 .plot {
   margin-top: 3px;
   padding: 0 3px;
-  background-image: linear-gradient(to top,#90bbbb,#d0e1e1);
+  /*background-image: linear-gradient(to top,#90bbbb,#d0e1e1);*/
 }
 .bottomBar {
   display: flex;
