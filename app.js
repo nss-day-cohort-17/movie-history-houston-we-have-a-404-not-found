@@ -206,29 +206,3 @@ $('.remove').click(removeMovie);
 $('.btn').click(searchMovie);
 
 // $('.save').click(saveNewUser);
-
-
-
-
-/*******************************************
-			SHOW DIFFERENT PAGES
-********************************************/
-
-// 
-// if (moveAlong) {
-// 	$(".card").hide();
-// 	$("." + nextCard).show();
-// }
-// });
-//
-// /*
-// When the back button clicked, move back a view
-// */
-// $(".card__back").click(function(e) {
-// var previousCard = $(this).attr("previous");
-// $(".card").hide();
-// $("." + previousCard).show();
-// });
-//
-//
-//
