@@ -129,6 +129,12 @@ body{
   background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);
 }
 
+
+.plot {
+  margin-top: 3px;
+  padding: 0 3px;
+  background-image: linear-gradient(to top,#90bbbb,#d0e1e1);
+}
 .bottomBar {
   display: flex;
   justify-content: space-between;
