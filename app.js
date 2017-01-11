@@ -39,32 +39,67 @@ var data;
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
-// populatePage();
+populatePage();
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
 
-// function populatePage() {
-// 	resetMoviesPage()
-// 	for (var i = 0; i < 9; i++) {
-// 		$.ajax({
-// 			  "async": true,
-// 			  "crossDomain": true,
-// 			  "url": "https://random-movie.herokuapp.com/random",
-// 			  "method": "GET",
-// 			  "headers": {
-// 			    "content-type": "application/json",
-// 			    "cache-control": "no-cache",
-// 			    "postman-token": "023e7134-4214-88e4-4f81-f1c8578e668e"
-// 			  },
-// 			  "data": "{\n\t\"username\" : \"lukeschuyler\"\n}\n",
-// 			  "processData": false,
-// 			}).done(function (random) {
-//   			console.log(random);
-// 		});
-// 	}
-// }
+function populatePage() {
+	var populateHTML = '';
+	// resetMoviesPage();
+		$.ajax({
+			  url: 'https://initial-movies.firebaseio.com/.json'
+			}).done(function (data) {
+		for (var i = 0; i < 8; i++) {
+  			 populateHTML += `<div class="col-xs-1 card topborder">
+				<div class="titlebox">
+					<h3>${data[i].Title}</h3>
+				</div>
+				<p>${data[i].Year}</p>
+				<div class="imageBlock">
+					<img class="imageStyle"src="${data[i].Poster}">
+				</div>
+				<div class="actorbox">
+					<h4>${data[i].Actors}</h4>
+				</div>
+				<div id="plot"> 
+					${data[i].Plot}
+				</div>
+				<div class="bottomBar">
+					<div class="viewbar">
+						<div class="checkbox">
+						  <label>
+						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
+						  </label>
+						</div>
+					</div>
+					<div class="br-wrapper ratings br-theme-bootstrap-stars">
+ 						 <select class="example">
+						  	<option value=""></option>
+						    <option value="1">1</option>
+						    <option value="2">2</option>
+						    <option value="3">3</option>
+						    <option value="4">4</option>
+						    <option value="5">5</option>
+						  </select>
+					</div>
+				</div>
+				<div class="addRemove">
+					<div class="addButton">
+						<button class="btn btn-primary">add</button class="btn btn-primary">
+					</div>
+					<div class="deleteButton">
+						<button class="btn btn-primary">delete</button class="btn btn-primary">
+					</div>
+				</div>
+			</div>
+			`;
+  		}
+  		$('.rowOrient').html(populateHTML);
+		});
+	}
+
 
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
@@ -143,10 +178,9 @@ function searchMovie() {
 	});
 	p.then(function(val) {
 		data = val;
-		$('.example').barrating('set', Math.round(data.imdbRating));
+		// $('.example').barrating('set', Math.round(data.imdbRating));
 	}).then(function() {
 				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
-
 				<div class="titlebox">
 					<h3 class="cardHeaders">${data.Title}</h3>
 				</div>
@@ -158,6 +192,9 @@ function searchMovie() {
 					<h4 class="cardHeaders">${data.Actors}</h4>
 				</div>
 				<div class="plot">
+					${data.Plot}
+				</div>
+				<div id="plot"> 
 					${data.Plot}
 				</div>
 				<div class="bottomBar">
