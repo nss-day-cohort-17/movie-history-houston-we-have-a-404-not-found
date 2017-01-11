@@ -1,70 +1,52 @@
 /***************************************************
-				INITIAL HIDES/SHOWS
-****************************************************/
-
-$('#searchView').hide();
-$('#myMovies').hide();
-
-
-$('.search').click(function(e) {
-	// $('.card').addClass('animated')
-	// $('.card').show();
-	setTimeout(function() {
-		$('.card').hide();
-		$('#searchView').show('slow');
-	})
-});
-
-$('.home').click(function(e) {
-	$('#myMovies').hide();
-	$('#searchView').hide();
-	$('#homeBody').hide();
-
-	// populatePage();
-});
-
-$('.myMovie').click(function(e) {
-	$('#homeBody').hide();
-	$('#searchView').hide();
-	$('#myMovies').show();
-});
-/***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
 var p;
 var moviesAdded = [];
 var data;
+var populateHTML = '';
+var currentMovies = [];
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
-populatePage();
+populateInitialPage();
 
 /***************************************************
-	FUNCTION FOR INITIALLY SHOWING MOVIES
+				TEMPLATE WORKHORSE FUNCTIONS
 ****************************************************/
-
-function populatePage() {
-	var populateHTML = '';
-	// resetMoviesPage();
+function getjson(url) {
+	p = new Promise(function(resolve,reject) {
 		$.ajax({
-			  url: 'https://initial-movies.firebaseio.com/.json'
-			}).done(function (data) {
-		for (var i = 0; i < 8; i++) {
-  			 populateHTML += `<div class="col-xs-1 card topborder">
+			url: url
+		}).done(function(data) {
+			resolve(data)
+		})
+	});
+	p.then(function(val) {
+		data = val;
+		// $('.example').barrating('set', Math.round(data.imdbRating));
+	})
+}
+
+function populatePage(myArray) {
+	populateHTML = '';
+	for (var i = 0; i < myArray.length; i++) {
+			console.log(myArray[i].Title)
+  			 populateHTML += `<div class="animated zoomInUp col-xs-1 card topborder">
 				<div class="titlebox">
-					<h3>${data[i].Title}</h3>
+					<h3>${myArray[i].Title}</h3>
 				</div>
-				<p>${data[i].Year}</p>
+				<p>${myArray[i].Year}</p>
 				<div class="imageBlock">
-					<img class="imageStyle"src="${data[i].Poster}">
+					<img class="imageStyle"src="${myArray[i].Poster}">
 				</div>
 				<div class="actorbox">
-					<h4>${data[i].Actors}</h4>
+					<h4>${myArray[i].Actors}</h4>
 				</div>
 				<div id="plot"> 
-					${data[i].Plot}
+					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
 					<div class="viewbar">
@@ -87,19 +69,63 @@ function populatePage() {
 				</div>
 				<div class="addRemove">
 					<div class="addButton">
-						<button class="btn btn-primary">add</button class="btn btn-primary">
+						<button class="add btn btn-primary">add</button>
 					</div>
 					<div class="deleteButton">
-						<button class="btn btn-primary">delete</button class="btn btn-primary">
+						<button class="remove btn btn-primary">delete</button>
 					</div>
 				</div>
-			</div>
-			`;
+			</div>`;
+			console.log(myArray)
+			console.log(data)
   		}
-  		$('.rowOrient').html(populateHTML);
-		});
-	}
+}
 
+/***************************************************
+				INITIAL HIDES/SHOWS
+****************************************************/
+
+$('#searchView').hide();
+$('#myMovies').hide();
+
+$('.search').click(function(e) {
+	// $('.card').addClass('animated')
+	// $('.card').show();
+	setTimeout(function() {
+		$('.card').hide();
+		$('#searchView').show('slow');
+	})
+});
+
+$('.home').click(function(e) {
+	$('#myMovies').hide();
+	$('#searchView').hide('slow');
+	populateInitialPage();
+	$('#homeBody').show();
+});
+
+$('.myMovie').click(function(e) {
+	$('.zoomInUp').addClass('zoomOutUp')
+	$('#searchView').hide('slow');
+	setTimeout(function() {
+		$('#homeBody').hide();
+	// $('#searchView').hide('slow');
+	$('#myMovies').show();
+	populatePage(moviesAdded);
+	}, 2000)
+});
+
+/***************************************************
+	FUNCTION FOR INITIALLY SHOWING MOVIES
+****************************************************/
+
+function populateInitialPage() {
+		getjson('https://initial-movies.firebaseio.com/.json')
+		p.then(function(data) {
+		populatePage(data);
+		$('#homeBody .rowOrient').html(populateHTML);
+  		});
+	}
 
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
@@ -168,19 +194,17 @@ function removeMovie() {
 }
 
 function searchMovie() {
+	populateHTML = '';
+	currentMovies = [];
 	var movieTitle = $('.input-sm').val();
-	p = new Promise(function(resolve,reject) {
-		$.ajax({
-			url: 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=short&r=json'
-		}).done(function(data) {
-			resolve(data)
-		})
-	});
+	getjson('http://www.omdbapi.com/?t=' + movieTitle);
 	p.then(function(val) {
-		data = val;
-		// $('.example').barrating('set', Math.round(data.imdbRating));
-	}).then(function() {
-				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
+		// currentMovies.push(data);
+		// console.log(currentMovies);
+		// populatePage(val);
+		// console.log(populateHTML)
+		$('#searchView .rowOrient').html(populateHTML);
+			$('#searchView .rowOrient').html(`<div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3 class="cardHeaders">${data.Title}</h3>
 				</div>
@@ -218,16 +242,17 @@ function searchMovie() {
 				</div>
 				<div class="addRemove">
 					<div class="addButton">
-						<button class="btn btn-primary">add</button class="btn btn-primary">
+						<button class="add btn btn-primary">add</button>
 					</div>
 					<div class="deleteButton">
-						<button class="btn btn-primary">delete</button class="btn btn-primary">
+						<button class="remove btn btn-primary">delete</button>
 					</div>
 				</div>
 			</div>
 			`)
+		$('button.add').click(addMovie);
+		$('button.remove').click(removeMovie);
 
-		console.log(data)
 	})
 };
 
@@ -248,9 +273,9 @@ $('.example').barrating('show', {
 			EVENT LISTENERS
 ********************************************/
 
-$('.add').click(addMovie);
+$('button.add').click(addMovie);
 
-$('.remove').click(removeMovie);
+$('button.remove').click(removeMovie);
 
 // $('.sign-in').click(getUserInfo);
 
