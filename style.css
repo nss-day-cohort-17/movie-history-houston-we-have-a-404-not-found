@@ -1,4 +1,6 @@
-
+body{
+  font-family: 'Varela Round', sans-serif;
+}
 .mainbody {
   /*height: 900px;*/
   /*width: 900px;*/
@@ -106,7 +108,14 @@
 }
 
 .imageStyle{
+<<<<<<< HEAD
   max-height: 250px;
+=======
+  height: 300px;
+  width: 80px;
+  min-width: 230px;
+
+>>>>>>> master
 }
 
 .actorbox {

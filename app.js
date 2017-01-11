@@ -2,25 +2,32 @@
 				INITIAL HIDES/SHOWS
 ****************************************************/
 
-// $('#searchView').hide();
-// $('#myMovies').hide();
+$('#searchView').hide();
+$('#myMovies').hide();
 
 
-// $('.search').click(function(e) {
-// 	$('.card').addClass('animated')
-// 	$('.card').addClass('animated')
-// 	setTimeout(function() {
-// 		$('.card').hide();
-// 		$('#searchView').show('slow');
-// 	})
-// });
+$('.search').click(function(e) {
+	// $('.card').addClass('animated')
+	// $('.card').show();
+	setTimeout(function() {
+		$('.card').hide();
+		$('#searchView').show('slow');
+	})
+});
 
-// $('.home').click(function(e) {
-// 	$('#myMovies').hide();
-// 	$('#searchView').hide();
-// 	// populatePage();
-// })
+$('.home').click(function(e) {
+	$('#myMovies').hide();
+	$('#searchView').hide();
+	$('#homeBody').hide();
 
+	// populatePage();
+});
+
+$('.myMovie').click(function(e) {
+	$('#homeBody').hide();
+	$('#searchView').hide();
+	$('#myMovies').show();
+});
 /***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
@@ -135,12 +142,18 @@ function searchMovie() {
 		})
 	});
 	p.then(function(val) {
-		data = val;
-		$('.rowOrient').html(`<div class="col-xs-4 card topborder">
+		data = val;	
+		$('.example').barrating('set', Math.round(data.imdbRating));
+	}).then(function() {
+				$('.rowOrient').html(`<div class="col-xs-3 card topborder">
+
 				<div class="titlebox">
 					<h3>${data.Title}</h3>
 				</div>
 				<p>${data.Year}</p>
+				<div class="imageBlock">
+					<img class="imageStyle"src="${data.Poster}">
+				</div>
 				<div class="actorbox">
 					<h4>${data.Actors}</h4>
 				</div>
@@ -171,17 +184,18 @@ function searchMovie() {
 						<button class="btn btn-primary">delete</button class="btn btn-primary">
 					</div>
 				</div>
+			</div>
+			<div id="plot"> 
+				${data.Plot}
 			</div>`)
+
 		console.log(data)
-	}).then(function() {
-		$('select').barrating('set', Math.round(data.imdbRating));
 	})
 };
 
 /*******************************************
 		JQUERY STAR RATING CODE
 ********************************************/
-
 $('.example').barrating('show', {
   theme: 'my-awesome-theme',
   onSelect: function(value, text, event) {
@@ -192,7 +206,6 @@ $('.example').barrating('show', {
     }
   }
 });
-
 /*******************************************
 			EVENT LISTENERS
 ********************************************/
@@ -201,8 +214,8 @@ $('.add').click(addMovie);
 
 $('.remove').click(removeMovie);
 
-// $('.sign-in').click(getUserInfo);
+$('.sign-in').click(getUserInfo);
 
 $('.btn').click(searchMovie);
 
-// $('.save').click(saveNewUser);
+$('.save').click(saveNewUser);
