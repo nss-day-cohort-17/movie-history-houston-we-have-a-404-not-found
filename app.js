@@ -46,14 +46,13 @@ populatePage();
 ****************************************************/
 
 function populatePage() {
-	var populateHTML;
-	// resetMoviesPage()
+	var populateHTML = '';
+	// resetMoviesPage();
 		$.ajax({
 			  url: 'https://initial-movies.firebaseio.com/.json'
 			}).done(function (data) {
 		for (var i = 0; i < 8; i++) {
-  			 populateHTML += `<div class="col-xs-4 card topborder">
-
+  			 populateHTML += `<div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${data[i].Title}</h3>
 				</div>
@@ -178,20 +177,22 @@ function searchMovie() {
 		})
 	});
 	p.then(function(val) {
-		data = val;	
-		$('.example').barrating('set', Math.round(data.imdbRating));
+		data = val;
+		// $('.example').barrating('set', Math.round(data.imdbRating));
 	}).then(function() {
-				$('.rowOrient').html(`<div class="col-xs-4 card topborder">
-
+				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
 				<div class="titlebox">
-					<h3>${data.Title}</h3>
+					<h3 class="cardHeaders">${data.Title}</h3>
 				</div>
 				<p>${data.Year}</p>
 				<div class="imageBlock">
 					<img class="imageStyle"src="${data.Poster}">
 				</div>
 				<div class="actorbox">
-					<h4>${data.Actors}</h4>
+					<h4 class="cardHeaders">${data.Actors}</h4>
+				</div>
+				<div class="plot">
+					${data.Plot}
 				</div>
 				<div id="plot"> 
 					${data.Plot}
