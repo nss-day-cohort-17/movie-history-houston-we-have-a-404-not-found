@@ -16,12 +16,20 @@
 .topFlexDiv {
   display: flex;
   justify-content: space-between;
+  min-width: 590px;
 }
 
 .linkstyle {
+  text-align: center;
+  text-decoration: none
   margin: 1px 3px;
-  padding: 3px;
+  padding: auto;
   color: #748c9c;
+  background-image:
+  radial-gradient(
+    #e0ebeb,
+    #b1cdcd 75%
+  );
 }
 
 .linkstyle:hover {
@@ -70,17 +78,32 @@
   background-size: 3px 100%;
   background-position: 0 0, 100% 0;
   background-repeat: no-repeat;
+  min-width: 250px;
 }
 
 .rowOrient {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .titlebox {
   margin: 5px 3px;
   padding: 5px 7px;
   background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);
+}
+
+.imageBlock{
+  /*width: 70%;*/
+  display: flex;
+  justify-content: center;
+  border: 2px solid #90bbbb;
+  align-items: center;
+}
+
+.imageStyle{
+  width: 70%;
+  min-width: 230px;
 }
 
 .actorbox {
@@ -96,6 +119,15 @@
 .viewbar {
   /*justify-content: flex-start;*/
   padding: 7px 5px 3px;
+}
+
+.btn-primary {
+  background-color: #90bbbb;
+  border-color: #639c9c;
+}
+
+.checkstyle {
+  background-color: #90bbbb;
 }
 
 .ratings {

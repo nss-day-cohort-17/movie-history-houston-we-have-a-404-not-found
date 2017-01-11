@@ -42,10 +42,10 @@ var data;
 
 function saveNewUser() {
 	var user = {};
-	var userName = $('.input').val(); 
+	var userName = $('.input').val();
 	user[userName] = {
 					 movies : moviesAdded
-					 }	
+					 }
 	console.log(user)
 	var p2 = new Promise(function(resolve,reject) {
 		$.ajax({
@@ -79,7 +79,7 @@ function getUserInfo() {
 }
 
 /***************************************************
-	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE) 
+	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
 ****************************************************/
 
 function addMovie() {
@@ -98,7 +98,7 @@ function removeMovie() {
 		moviesAdded.splice(index, 1);
 		console.log(moviesAdded)
 	// } else {
-		
+
 	// }
 }
 
@@ -121,22 +121,22 @@ function searchMovie() {
 };
 
 /*******************************************
-		JQUERY STAR RATING CODE 
+		JQUERY STAR RATING CODE
 ********************************************/
 
-$('#example').barrating('show', {
+$('.example').barrating('show', {
   theme: 'my-awesome-theme',
   onSelect: function(value, text, event) {
     if (typeof(event) !== 'undefined') {
-    	
+
     } else {
-	
+
     }
   }
 });
 
 /*******************************************
-			EVENT LISTENERS 
+			EVENT LISTENERS
 ********************************************/
 
 $('.add').click(addMovie);
