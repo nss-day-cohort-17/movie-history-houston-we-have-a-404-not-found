@@ -53,6 +53,8 @@ function populatePage() {
 			}).done(function (data) {
 		for (var i = 0; i < 8; i++) {
   			 populateHTML += `
+
+
 				 <div class="col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${data[i].Title}</h3>
@@ -99,6 +101,7 @@ function populatePage() {
 			`;
   		}
   		$('.rowOrient').html(populateHTML);
+
 		});
 	}
 
@@ -196,9 +199,6 @@ function searchMovie() {
 				<div class="plot">
 					${data.Plot}
 				</div>
-				<div id="plot">
-					${data.Plot}
-				</div>
 				<div class="bottomBar">
 					<div class="viewbar">
 						<div class="checkbox">
@@ -208,6 +208,7 @@ function searchMovie() {
 						</div>
 					</div>
 					<div class="br-wrapper ratings br-theme-bootstrap-stars">
+					${data.imdbRating}
  						 <select class="example">
 						  	<option value=""></option>
 						    <option value="1">1</option>
