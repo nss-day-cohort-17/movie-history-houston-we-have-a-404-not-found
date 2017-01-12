@@ -1,73 +1,56 @@
 /***************************************************
-				INITIAL HIDES/SHOWS
-****************************************************/
-
-$('#searchView').hide();
-$('#myMovies').hide();
-
-
-$('.search').click(function(e) {
-	// $('.card').addClass('animated')
-	// $('.card').show();
-	setTimeout(function() {
-		$('.card').hide();
-		$('#searchView').show('slow');
-	})
-});
-
-$('.home').click(function(e) {
-	$('#myMovies').hide();
-	$('#searchView').hide();
-	$('#homeBody').show();
-
-	// populatePage();
-});
-
-$('.myMovie').click(function(e) {
-	$('#homeBody').hide();
-	$('#searchView').hide();
-	$('#myMovies').show();
-});
-/***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
 var p;
 var moviesAdded = [];
 var data;
+let populateHTML;
+var currentMovies = [];
+let searchData;
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
-populatePage();
+populateInitialPage();
+populateMyMoviesPage();
 
 /***************************************************
-	FUNCTION FOR INITIALLY SHOWING MOVIES
+				TEMPLATE WORKHORSE FUNCTIONS
 ****************************************************/
-
-function populatePage() {
-	var populateHTML = '';
-	// resetMoviesPage();
+function getjson(url) {
+	p = new Promise(function(resolve,reject) {
 		$.ajax({
-			  url: 'https://initial-movies.firebaseio.com/.json'
-			}).done(function (data) {
-		for (var i = 0; i < 8; i++) {
+			url: url
+		}).done(function(data) {
+			resolve(data)
+		})
+	});
+	p.then(function(val) {
+		data = val;
+		// $('.example').barrating('set', Math.round(data.imdbRating));
+	})
+}
+
+function populatePage(myArray) {
+	populateHTML = '';
+	for (var i = 0; i < myArray.length; i++) {
   			 populateHTML += `
-
-
-				 <div class="col-xs-1 card topborder">
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  			 <div class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
-					<h3>${data[i].Title}</h3>
+					<h3>${myArray[i].Title}</h3>
 				</div>
-				<p>${data[i].Year}</p>
+				<p>${myArray[i].Year}</p>
 				<div class="imageBlock">
-					<img class="imageStyle"src="${data[i].Poster}">
+					<img class="imageStyle"src="${myArray[i].Poster}">
 				</div>
 				<div class="actorbox">
-					<h4>${data[i].Actors}</h4>
+					<h4>${myArray[i].Actors}</h4>
 				</div>
-				<div id="plot">
-					${data[i].Plot}
+
+				<div class="plot"> 
+					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
 					<div class="viewbar">
@@ -90,44 +73,122 @@ function populatePage() {
 				</div>
 				<div class="addRemove">
 					<div class="addButton">
-						<button class="btn btn-primary">add</button class="btn btn-primary">
+						<button class="add btn btn-primary">add</button>
 					</div>
 					<div class="deleteButton">
-						<button class="btn btn-primary">delete</button class="btn btn-primary">
+						<button class="remove btn btn-primary">delete</button>
 					</div>
 				</div>
 			</div>
-			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-			`;
-  		}
-  		$('.rowOrient').html(populateHTML);
 
-		});
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
+  	}
+}
+
+/***************************************************
+				INITIAL HIDES/SHOWS
+****************************************************/
+
+$('#searchView').hide();
+$('#myMovies').hide();
+$('#savedPopUp').hide()
+$('.search').click(function(e) {
+	// $('.card').addClass('animated')
+	// $('.card').show();
+	$('#myMovies').hide();
+	setTimeout(function() {
+		$('.card').hide();
+		$('#searchView').show('slow');
+	})
+});
+
+$('.home').click(function(e) {
+	$('#myMovies').hide();
+	$('#searchView').hide('slow');
+	$('#homeBody').show();
+	populateInitialPage();
+});
+
+$('.myMovie').click(function(e) {
+
+	$('#searchView').hide('slow');
+	$('#homeBody').hide();
+	$('#myMovies').show();
+	populatePage(moviesAdded);
+	$('#myMovies .rowOrient').html(populateHTML);
+});
+
+/***************************************************
+	FUNCTION FOR INITIALLY SHOWING MOVIES
+****************************************************/
+
+function populateInitialPage() {
+		getjson('https://initial-movies.firebaseio.com/.json')
+		p.then(function(data) {
+		populatePage(data);
+		$('#homeBody .rowOrient').html(populateHTML);
+  		});
 	}
 
+/***************************************************
+	FUNCTION FOR POPULATING MY MOVIES FROM FIREBASE
+****************************************************/
+
+function populateMyMoviesPage() {
+	getjson('https://user-enter-luke.firebaseio.com/.json')
+	p.then(function(data) {
+		if (data !== null) {
+			console.log(data.users.movies.movies)
+			for (var i = 0; i < data.users.movies.movies.length; i++) {
+				moviesAdded.push(data.users.movies.movies[i])
+			}
+		}
+  	});
+}
 
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
-// function saveNewUser() {
+function saveNewUser() {
+	var user = {};
+	// var userName = $('.input').val();
+	var userName = 'movies'
+	user[userName] = {
+					 movies : moviesAdded
+					 }
+	console.log(user)
+	var p2 = new Promise(function(resolve,reject) {
+		$.ajax({
+			type: 'PUT',
+			url: 'https://user-enter-luke.firebaseio.com/users.json',
+			data: JSON.stringify(user),
+			success: function(response) {
+				console.log('success!!')
+			}
+		});
+	});
+}
+
+// function saveMovieInfo() {
 // 	var user = {};
-// 	var userName = $('.input').val();
-// 	user[userName] = {
-// 					 movies : moviesAdded
-// 					 }
-// 	console.log(user)
+// 	var movies = 'movies';
+// 	user[movies] = moviesAdded
 // 	var p2 = new Promise(function(resolve,reject) {
 // 		$.ajax({
-// 			type: 'PUT',
+// 			type: 'POST',
 // 			url: 'https://user-enter-luke.firebaseio.com/users.json',
 // 			data: JSON.stringify(user),
 // 			success: function(response) {
-// 				console.log('success!!')
+// 				$('#savedPopUp').show('slow')
+// 				setTimeout(function() {
+// 					$('#savedPopUp').hide('slow');
+// 				}, 5000)
 // 			}
 // 		});
 // 	});
 // }
+
 
 // function getUserInfo() {
 // 	var userInput = $('.input').val();
@@ -173,65 +234,19 @@ function removeMovie() {
 }
 
 function searchMovie() {
+	populateHTML = '';
+	currentMovies = [];
 	var movieTitle = $('.input-sm').val();
-	p = new Promise(function(resolve,reject) {
-		$.ajax({
-			url: 'http://www.omdbapi.com/?t=' + movieTitle + '&y=&plot=short&r=json'
-		}).done(function(data) {
-			resolve(data)
-		})
-	});
+	getjson('http://www.omdbapi.com/?t=' + movieTitle);
 	p.then(function(val) {
-		data = val;
-		// $('.example').barrating('set', Math.round(data.imdbRating));
+		searchData = val;
 	}).then(function() {
-				$('.rowOrient').html(`<div class="col-xs-1 card topborder">
-				<div class="titlebox">
-					<h3 class="cardHeaders">${data.Title}</h3>
-				</div>
-				<p>${data.Year}</p>
-				<div class="imageBlock">
-					<img class="imageStyle"src="${data.Poster}">
-				</div>
-				<div class="actorbox">
-					<h4 class="cardHeaders">${data.Actors}</h4>
-				</div>
-				<div class="plot">
-					${data.Plot}
-				</div>
-				<div class="bottomBar">
-					<div class="viewbar">
-						<div class="checkbox">
-						  <label>
-						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
-						  </label>
-						</div>
-					</div>
-					<div class="br-wrapper ratings br-theme-bootstrap-stars">
-					${data.imdbRating}
- 						 <select class="example">
-						  	<option value=""></option>
-						    <option value="1">1</option>
-						    <option value="2">2</option>
-						    <option value="3">3</option>
-						    <option value="4">4</option>
-						    <option value="5">5</option>
-						  </select>
-					</div>
-				</div>
-				<div class="addRemove">
-					<div class="addButton">
-						<button class="btn btn-primary">add</button class="btn btn-primary">
-					</div>
-					<div class="deleteButton">
-						<button class="btn btn-primary">delete</button class="btn btn-primary">
-					</div>
-				</div>
-			</div>
-			`)
-
-		console.log(data)
-	})
+		currentMovies.push(searchData);
+		populatePage(currentMovies);
+		$('#searchView .rowOrient').html(populateHTML);
+		$('button.add').click(addMovie);
+		$('button.remove').click(removeMovie);
+	});
 };
 
 /*******************************************
@@ -251,12 +266,16 @@ $('.example').barrating('show', {
 			EVENT LISTENERS
 ********************************************/
 
-$('.add').click(addMovie);
+$('button.add').click(addMovie);
 
-$('.remove').click(removeMovie);
+$('button.remove').click(removeMovie);
 
 // $('.sign-in').click(getUserInfo);
 
-$('.btn').click(searchMovie);
+$('.searchBtn').click(searchMovie);
 
-// $('.save').click(saveNewUser);
+$('.save').click(saveNewUser);
+
+// $('.save').click(function() {
+// 	saveMovieInfo();
+// })
