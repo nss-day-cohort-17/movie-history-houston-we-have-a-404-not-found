@@ -13,6 +13,7 @@ let searchData;
 ****************************************************/
 
 populateInitialPage();
+populateMyMoviesPage();
 
 /***************************************************
 				TEMPLATE WORKHORSE FUNCTIONS
@@ -34,7 +35,6 @@ function getjson(url) {
 function populatePage(myArray) {
 	populateHTML = '';
 	for (var i = 0; i < myArray.length; i++) {
-			console.log(myArray[i].Title)
   			 populateHTML += `<div class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${myArray[i].Title}</h3>
@@ -86,7 +86,7 @@ function populatePage(myArray) {
 
 $('#searchView').hide();
 $('#myMovies').hide();
-
+$('#savedPopUp').hide()
 $('.search').click(function(e) {
 	// $('.card').addClass('animated')
 	// $('.card').show();
@@ -126,12 +126,29 @@ function populateInitialPage() {
 	}
 
 /***************************************************
+	FUNCTION FOR POPULATING MY MOVIES FROM FIREBASE
+****************************************************/
+
+function populateMyMoviesPage() {
+	getjson('https://user-enter-luke.firebaseio.com/.json')
+	p.then(function(data) {
+		if (data !== null) {
+			console.log(data.users.movies.movies)
+			for (var i = 0; i < data.users.movies.movies.length; i++) {
+				moviesAdded.push(data.users.movies.movies[i])
+			}
+		}
+  	});
+}
+
+/***************************************************
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
 function saveNewUser() {
 	var user = {};
-	var userName = $('.input').val();
+	// var userName = $('.input').val();
+	var userName = 'movies'
 	user[userName] = {
 					 movies : moviesAdded
 					 }
@@ -147,6 +164,26 @@ function saveNewUser() {
 		});
 	});
 }
+
+// function saveMovieInfo() {
+// 	var user = {};
+// 	var movies = 'movies';
+// 	user[movies] = moviesAdded
+// 	var p2 = new Promise(function(resolve,reject) {
+// 		$.ajax({
+// 			type: 'POST',
+// 			url: 'https://user-enter-luke.firebaseio.com/users.json',
+// 			data: JSON.stringify(user),
+// 			success: function(response) {
+// 				$('#savedPopUp').show('slow')
+// 				setTimeout(function() {
+// 					$('#savedPopUp').hide('slow');
+// 				}, 5000)
+// 			}
+// 		});
+// 	});
+// }
+
 
 // function getUserInfo() {
 // 	var userInput = $('.input').val();
@@ -233,4 +270,8 @@ $('button.remove').click(removeMovie);
 
 $('.searchBtn').click(searchMovie);
 
-// $('.save').click(saveNewUser);
+$('.save').click(saveNewUser);
+
+// $('.save').click(function() {
+// 	saveMovieInfo();
+// })
