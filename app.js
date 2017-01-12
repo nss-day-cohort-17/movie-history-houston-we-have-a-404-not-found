@@ -35,7 +35,9 @@ function getjson(url) {
 function populatePage(myArray) {
 	populateHTML = '';
 	for (var i = 0; i < myArray.length; i++) {
-  			 populateHTML += `<div class="animated fadeInLeft col-xs-1 card topborder">
+  			 populateHTML += `
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  			 <div class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${myArray[i].Title}</h3>
 				</div>
@@ -76,7 +78,9 @@ function populatePage(myArray) {
 						<button class="remove btn btn-primary">delete</button>
 					</div>
 				</div>
-			</div>`;
+			</div>
+
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
   	}
 }
 
@@ -241,7 +245,6 @@ function searchMovie() {
 		$('#searchView .rowOrient').html(populateHTML);
 		$('button.add').click(addMovie);
 		$('button.remove').click(removeMovie);
-
 	});
 };
 
