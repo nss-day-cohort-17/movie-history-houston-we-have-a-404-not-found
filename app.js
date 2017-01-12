@@ -77,8 +77,6 @@ function populatePage(myArray) {
 					</div>
 				</div>
 			</div>`;
-			// console.log(myArray)
-			console.log(populateHTML)
   	}
 }
 
@@ -92,6 +90,7 @@ $('#myMovies').hide();
 $('.search').click(function(e) {
 	// $('.card').addClass('animated')
 	// $('.card').show();
+	$('#myMovies').hide();
 	setTimeout(function() {
 		$('.card').hide();
 		$('#searchView').show('slow');
@@ -106,14 +105,12 @@ $('.home').click(function(e) {
 });
 
 $('.myMovie').click(function(e) {
-	// $('.zoomInUp').addClass('zoomOutUp')
+
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
-	setTimeout(function() {
 	$('#myMovies').show();
 	populatePage(moviesAdded);
 	$('#myMovies .rowOrient').html(populateHTML);
-	}, 2000)
 });
 
 /***************************************************
@@ -132,24 +129,24 @@ function populateInitialPage() {
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
-// function saveNewUser() {
-// 	var user = {};
-// 	var userName = $('.input').val();
-// 	user[userName] = {
-// 					 movies : moviesAdded
-// 					 }
-// 	console.log(user)
-// 	var p2 = new Promise(function(resolve,reject) {
-// 		$.ajax({
-// 			type: 'PUT',
-// 			url: 'https://user-enter-luke.firebaseio.com/users.json',
-// 			data: JSON.stringify(user),
-// 			success: function(response) {
-// 				console.log('success!!')
-// 			}
-// 		});
-// 	});
-// }
+function saveNewUser() {
+	var user = {};
+	var userName = $('.input').val();
+	user[userName] = {
+					 movies : moviesAdded
+					 }
+	console.log(user)
+	var p2 = new Promise(function(resolve,reject) {
+		$.ajax({
+			type: 'PUT',
+			url: 'https://user-enter-luke.firebaseio.com/users.json',
+			data: JSON.stringify(user),
+			success: function(response) {
+				console.log('success!!')
+			}
+		});
+	});
+}
 
 // function getUserInfo() {
 // 	var userInput = $('.input').val();
@@ -234,6 +231,6 @@ $('button.remove').click(removeMovie);
 
 // $('.sign-in').click(getUserInfo);
 
-$('.btn').click(searchMovie);
+$('.searchBtn').click(searchMovie);
 
 // $('.save').click(saveNewUser);
