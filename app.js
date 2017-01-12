@@ -49,7 +49,7 @@ function populatePage(myArray) {
 					<h4>${myArray[i].Actors}</h4>
 				</div>
 
-				<div class="plot"> 
+				<div class="plot">
 					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
@@ -60,15 +60,10 @@ function populatePage(myArray) {
 						  </label>
 						</div>
 					</div>
-					<div class="br-wrapper ratings br-theme-bootstrap-stars">
- 						 <select class="example">
-						  	<option value=""></option>
-						    <option value="1">1</option>
-						    <option value="2">2</option>
-						    <option value="3">3</option>
-						    <option value="4">4</option>
-						    <option value="5">5</option>
-						  </select>
+					<div class="ratings">
+					<h4>${myArray[i].imdbRating}
+					<img class="star" src="images/star.png"></h4>
+
 					</div>
 				</div>
 				<div class="addRemove">
@@ -279,3 +274,11 @@ $('.save').click(saveNewUser);
 // $('.save').click(function() {
 // 	saveMovieInfo();
 // })
+
+
+/*******************************************
+			FIREBASE LOG INFO
+********************************************/
+
+
+setTimeout(()=>console.log(firebase.auth().currentUser), 1000)

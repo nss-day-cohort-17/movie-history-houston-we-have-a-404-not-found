@@ -164,6 +164,10 @@ body{
   padding: 3px 5px;
 }
 
+.star {
+  height: 25px;
+}
+
 .addRemove {
   display: flex;
   justify-content: space-between;
