@@ -4,8 +4,9 @@
 var p;
 var moviesAdded = [];
 var data;
-var populateHTML = '';
+let populateHTML;
 var currentMovies = [];
+let searchData;
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
@@ -34,7 +35,7 @@ function populatePage(myArray) {
 	populateHTML = '';
 	for (var i = 0; i < myArray.length; i++) {
 			console.log(myArray[i].Title)
-  			 populateHTML += `<div class="animated zoomInUp col-xs-1 card topborder">
+  			 populateHTML += `<div class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${myArray[i].Title}</h3>
 				</div>
@@ -76,9 +77,9 @@ function populatePage(myArray) {
 					</div>
 				</div>
 			</div>`;
-			console.log(myArray)
-			console.log(data)
-  		}
+			// console.log(myArray)
+			console.log(populateHTML)
+  	}
 }
 
 /***************************************************
@@ -100,18 +101,18 @@ $('.search').click(function(e) {
 $('.home').click(function(e) {
 	$('#myMovies').hide();
 	$('#searchView').hide('slow');
-	populateInitialPage();
 	$('#homeBody').show();
+	populateInitialPage();
 });
 
 $('.myMovie').click(function(e) {
-	$('.zoomInUp').addClass('zoomOutUp')
+	// $('.zoomInUp').addClass('zoomOutUp')
 	$('#searchView').hide('slow');
+	$('#homeBody').hide();
 	setTimeout(function() {
-		$('#homeBody').hide();
-	// $('#searchView').hide('slow');
 	$('#myMovies').show();
 	populatePage(moviesAdded);
+	$('#myMovies .rowOrient').html(populateHTML);
 	}, 2000)
 });
 
@@ -199,61 +200,15 @@ function searchMovie() {
 	var movieTitle = $('.input-sm').val();
 	getjson('http://www.omdbapi.com/?t=' + movieTitle);
 	p.then(function(val) {
-		// currentMovies.push(data);
-		// console.log(currentMovies);
-		// populatePage(val);
-		// console.log(populateHTML)
+		searchData = val;
+	}).then(function() {
+		currentMovies.push(searchData);
+		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
-			$('#searchView .rowOrient').html(`<div class="col-xs-1 card topborder">
-				<div class="titlebox">
-					<h3 class="cardHeaders">${data.Title}</h3>
-				</div>
-				<p>${data.Year}</p>
-				<div class="imageBlock">
-					<img class="imageStyle"src="${data.Poster}">
-				</div>
-				<div class="actorbox">
-					<h4 class="cardHeaders">${data.Actors}</h4>
-				</div>
-				<div class="plot">
-					${data.Plot}
-				</div>
-				<div id="plot"> 
-					${data.Plot}
-				</div>
-				<div class="bottomBar">
-					<div class="viewbar">
-						<div class="checkbox">
-						  <label>
-						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
-						  </label>
-						</div>
-					</div>
-					<div class="br-wrapper ratings br-theme-bootstrap-stars">
- 						 <select class="example">
-						  	<option value=""></option>
-						    <option value="1">1</option>
-						    <option value="2">2</option>
-						    <option value="3">3</option>
-						    <option value="4">4</option>
-						    <option value="5">5</option>
-						  </select>
-					</div>
-				</div>
-				<div class="addRemove">
-					<div class="addButton">
-						<button class="add btn btn-primary">add</button>
-					</div>
-					<div class="deleteButton">
-						<button class="remove btn btn-primary">delete</button>
-					</div>
-				</div>
-			</div>
-			`)
 		$('button.add').click(addMovie);
 		$('button.remove').click(removeMovie);
 
-	})
+	});
 };
 
 /*******************************************
