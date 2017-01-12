@@ -90,6 +90,7 @@ $('#savedPopUp').hide()
 $('.search').click(function(e) {
 	// $('.card').addClass('animated')
 	// $('.card').show();
+	$('#myMovies').hide();
 	setTimeout(function() {
 		$('.card').hide();
 		$('#searchView').show('slow');
@@ -104,14 +105,12 @@ $('.home').click(function(e) {
 });
 
 $('.myMovie').click(function(e) {
-	// $('.zoomInUp').addClass('zoomOutUp')
+
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
-	setTimeout(function() {
 	$('#myMovies').show();
 	populatePage(moviesAdded);
 	$('#myMovies .rowOrient').html(populateHTML);
-	}, 2000)
 });
 
 /***************************************************
@@ -184,6 +183,7 @@ function saveNewUser() {
 // 		});
 // 	});
 // }
+
 
 // function getUserInfo() {
 // 	var userInput = $('.input').val();
@@ -268,7 +268,7 @@ $('button.remove').click(removeMovie);
 
 // $('.sign-in').click(getUserInfo);
 
-$('.btn').click(searchMovie);
+$('.searchBtn').click(searchMovie);
 
 $('.save').click(saveNewUser);
 

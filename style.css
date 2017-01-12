@@ -1,5 +1,7 @@
 body{
   font-family: 'Varela Round', sans-serif;
+  /*background: radial-gradient( rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.49) ), center/cover no-repeat fixed url(http://screencrush.com/442/files/2016/03/o-THEATER-SEATS-facebook.jpg);*/
+
 }
 .mainbody {
   /*height: 900px;*/
@@ -175,4 +177,12 @@ body{
 .deleteButton {
   /*justify-content: flex-end;*/
   padding: 7px 5px 3px;
+}
+
+#searchField > button {
+  font-size: 16px;
+}
+
+#searchField > input {
+  font-size: 16px;
 }
