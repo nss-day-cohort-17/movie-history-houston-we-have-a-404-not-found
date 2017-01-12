@@ -105,6 +105,7 @@ $('.home').click(function(e) {
 });
 
 $('.myMovie').click(function(e) {
+
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
 	$('#myMovies').show();
