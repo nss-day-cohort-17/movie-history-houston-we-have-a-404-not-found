@@ -46,7 +46,7 @@ function populatePage(myArray) {
 				<div class="actorbox">
 					<h4>${myArray[i].Actors}</h4>
 				</div>
-				<div id="plot"> 
+				<div class="plot"> 
 					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
