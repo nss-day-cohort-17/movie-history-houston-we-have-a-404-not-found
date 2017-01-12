@@ -48,7 +48,8 @@ function populatePage(myArray) {
 				<div class="actorbox">
 					<h4>${myArray[i].Actors}</h4>
 				</div>
-				<div id="plot"> 
+
+				<div class="plot"> 
 					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
@@ -79,6 +80,7 @@ function populatePage(myArray) {
 					</div>
 				</div>
 			</div>
+
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
   	}
 }
@@ -244,7 +246,6 @@ function searchMovie() {
 		$('#searchView .rowOrient').html(populateHTML);
 		$('button.add').click(addMovie);
 		$('button.remove').click(removeMovie);
-
 	});
 };
 
