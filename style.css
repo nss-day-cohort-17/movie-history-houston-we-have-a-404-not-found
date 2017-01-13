@@ -117,7 +117,6 @@ a:link {
   margin: 5px 3px;
   padding: 2px 7px;
   /*background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);*/
-  font-family: 'Luckiest Guy', cursive;
 }
 
 .cardHeaders {
@@ -197,6 +196,7 @@ a:link {
 .deleteButton {
   /*justify-content: flex-end;*/
   padding: 7px 5px 3px;
+  
 }
 
 #searchField > button {
