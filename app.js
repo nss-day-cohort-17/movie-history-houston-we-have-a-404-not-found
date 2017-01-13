@@ -295,47 +295,175 @@ function returnMovieID(obj, ID) {
 	}
 }
 
+
+
+
 function addMovie(e) {
-	console.log(e.target.parentElement.parentElement.parentElement)
+var count = 0
+
 	movieID = returnMovieID(data, 'imdbID');
+	console.log(movieID)
 	for (var i = 0; i < moviesAdded.length; i++) {
 		checkID = returnMovieID(moviesAdded[i], 'imdbID');
-		if (checkID !== movieID) {
-			IDArray.push(checkID)
-			console.log(movieID)
-		} else {
-			console.log('break')
+		if (checkID === movieID) {
+			count += 1;
 		}
+
 	}
-	if (IDArray.includes(movieID) === false) {
-		IDArray.push(movieID)
+	if (count === 0) {
 		moviesAdded.push(data)
-		IDArray = [];
 	} else {
-		console.log('hello')
+		console.log("Did not add movie")
 	}
 }
+
+
+
 
 function removeMovie(e) {
 	$(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
-	console.log(data)
-	var index = moviesAdded.indexOf(data)
-	console.log(index)
-	if ($.inArray(searchData, moviesAdded) !== -1) {
-		var index = moviesAdded.indexOf(data);
-		moviesAdded.splice(index, 1);
-		// console.log(moviesAdded)
-		console.log($(this))
-	} else {
-		// console.log(index)
+	var count = 0
+	movieID = returnMovieID(data, 'imdbID');
+
+	for (var i = 0; i < moviesAdded.length; i++) {
+		checkID = returnMovieID(moviesAdded[i], 'imdbID');
+		if (checkID != movieID) {
+			count += 1;
+		}
+		if (checkID === movieID) {
+		moviesAdded.splice(count, 1);
+		console.log(moviesAdded)
+		console.log("removed movie")
+		} else {
+			console.log("Could not find")
+		}
 	}
-
-
-// function checkIfAdded() {
-// 	if ($.inArray(data, moviesAdded) !== -1) {
-
-// 	}
 }
+
+
+
+
+
+/*************************
+Another thinger
+********************/
+// function removeMovie(e) {
+// 	$(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
+// 	// console.log(data)
+// 	// var index = moviesAdded.indexOf(data)
+// 	// console.log(index)
+// 	var count = 0
+// 	movieID = returnMovieID(data, 'imdbID');
+//
+// 	for (var i = 0; i < moviesAdded.length; i++) {
+// 		checkID = returnMovieID(moviesAdded[i], 'imdbID');
+// 		if (checkID != movieID) {
+// 			count += 1;
+// 		}
+// 		if (checkID === movieID) {
+//
+//
+// 		// if ($.inArray(searchData, moviesAdded) !== -1) {
+// 		// var index = moviesAdded.indexOf(data);
+// 		// moviesAdded.splice(index, 1);
+// 		moviesAdded.splice(count, 1);
+// 		// moviesAdded.push()
+//
+// 		console.log(moviesAdded)
+// 		console.log("removed movie")
+// 		} else {
+// 			console.log("Could not find")
+//
+// 		// console.log(index)
+// 		}
+// 	}
+// }
+
+/************************************
+THE HYBRID TEST THINGER!!!!
+******************************/
+//
+// function addMovie(e) {
+// 	// var selectedMovieID =
+// 	// for(var i=0; i < movies.length; i++) {
+// 	// 	if (selectedMovieID === )
+// 	// }
+// var count = 0
+//
+// 	// console.log(e.target.parentElement.parentElement.parentElement)
+// 	movieID = returnMovieID(data, 'imdbID');
+// 	console.log(movieID)
+// 	for (var i = 0; i < moviesAdded.length; i++) {
+// 		checkID = returnMovieID(moviesAdded[i], 'imdbID');
+// 		if (checkID === movieID) {
+// 			count += 1;
+// 	// 		IDArray.push(checkID)
+// 	// 		console.log(movieID)
+// 		// } else {
+// 	// 		console.log('break')
+// 		}
+//
+// 	}
+// 	if (count === 0) {
+//
+// 	// if (IDArray.includes(movieID) === false) {
+// 		// IDArray.push(movieID)
+// 		moviesAdded.push(data)
+// 		// IDArray = [];
+// 	} else {
+// 		console.log("Did not add movie")
+// 		// console.log('hello')
+// 	}
+// }
+
+/***************************
+END OF TEST
+**********************/
+
+//
+//
+//
+// function addMovie(e) {
+// 	console.log(e.target.parentElement.parentElement.parentElement)
+// 	movieID = returnMovieID(data, 'imdbID');
+// 	for (var i = 0; i < moviesAdded.length; i++) {
+// 		checkID = returnMovieID(moviesAdded[i], 'imdbID');
+// 		if (checkID !== movieID) {
+// 			IDArray.push(checkID)
+// 			console.log(movieID)
+// 		} else {
+// 			console.log('break')
+// 		}
+// 	}
+// 	if (IDArray.includes(movieID) === false) {
+// 		IDArray.push(movieID)
+// 		moviesAdded.push(data)
+// 		IDArray = [];
+// 	} else {
+// 		console.log('hello')
+// 	}
+// }
+
+// function removeMovie(e) {
+// 	$(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
+// 	console.log(data)
+// 	var index = moviesAdded.indexOf(data)
+// 	console.log(index)
+// 	if ($.inArray(searchData, moviesAdded) !== -1) {
+// 		var index = moviesAdded.indexOf(data);
+// 		moviesAdded.splice(index, 1);
+// 		// console.log(moviesAdded)
+// 		console.log($(this))
+// 	} else {
+// 		// console.log(index)
+// 	}
+//
+//
+// // function checkIfAdded() {
+// // 	if ($.inArray(data, moviesAdded) !== -1) {
+//
+// // 	}
+// }
 
 function searchMovie() {
 	populateHTML = '';
