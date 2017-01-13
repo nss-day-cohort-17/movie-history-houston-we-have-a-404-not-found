@@ -1,3 +1,14 @@
+ // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDdh5jo2nV2Ke1gKqvp-sx6M9KpcLhaXVc",
+    authDomain: "user-enter-luke.firebaseapp.com",
+    databaseURL: "https://user-enter-luke.firebaseio.com",
+    storageBucket: "user-enter-luke.appspot.com",
+    messagingSenderId: "605457594295"
+  };
+  firebase.initializeApp(config);
+
+
 /***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
@@ -11,13 +22,15 @@ let searchData;
 var movieID;
 let checkID;
 let IDArray = [];
+let userID;
+let currentUserEmail;
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
 populateInitialPage();
-populateMyMoviesPage();
+// populateMyMoviesPage();
 
 /***************************************************
 				TEMPLATE WORKHORSE FUNCTIONS
@@ -32,9 +45,7 @@ function getjson(url) {
 	});
 	p.then(function(val) {
 		data = val;
-		$('.add').click(addMovie);
-		$('.remove').click(removeMovie);
-		// $('.example').barrating('set', Math.round(data.imdbRating));
+		console.log(data)
 	})
 }
 
@@ -61,7 +72,7 @@ function populatePage(myArray) {
 					<div class="viewbar">
 						<div class="checkbox">
 						  <label>
-						    <input type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
+						    <input class="movie-viewed" type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed">
 						  </label>
 						</div>
 					</div>
@@ -76,14 +87,12 @@ function populatePage(myArray) {
 						<button class="add btn btn-primary">add</button>
 					</div>
 					<div class="deleteButton">
-						<button class="remove btn btn-primary">delete</button>
+						<button class="remove btn btn-danger">delete</button>
 					</div>
 				</div>
 			</div>
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
   	}
-  	$('.add').click(addMovie);
-		$('.remove').click(removeMovie);
 }
 
 /***************************************************
@@ -102,20 +111,17 @@ $('#myMovies').hide();
 $('#savedPopUp').hide()
 $('.search').click(function(e) {
 
-	firebase.auth().onAuthStateChanged(()=> {
+firebase.auth().onAuthStateChanged(()=> {
 
 	if (firebase.auth().currentUser !== null) {
 		// var email = firebase.auth().currentUser.email
 		$(".loginpage").addClass("hidden");
+		$(".logout").removeClass("hidden");
 	}else {
 		$(".loginpage").addClass("hidden");
 		$(".logout").addClass("fadeOutUp hidden");
 	}
 })
-
-	// $('.add').hide();
-	// $('.card').addClass('animated')
-	// $('.card').show();
 	$('#myMovies').hide();
 	setTimeout(function() {
 		$('.card').hide();
@@ -130,9 +136,10 @@ $('.home').click(function(e) {
 		if (firebase.auth().currentUser !== null) {
 			// var email = firebase.auth().currentUser.email
 			$(".loginpage").addClass("hidden");
+			$(".logout").removeClass("hidden");
 		}else {
 			$(".loginpage").addClass("hidden");
-			$(".logout").addClass(" fadeOutUp hidden");
+			$(".logout").addClass("hidden");
 		}
 	})
 
@@ -143,10 +150,9 @@ $('.home').click(function(e) {
 	populateInitialPage();
 });
 
-$('.myMovie').click(function(e) {
 
+$('.myMovie').click(function(e) {
 	$('.add').hide();
-	$('#myMovies').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
 
@@ -155,31 +161,18 @@ $('.myMovie').click(function(e) {
 	    // var email = firebase.auth().currentUser.email
 	    $(".loginpage").addClass("hidden");
 			$(".logout").removeClass("hidden");
-
-			$('#myMovies').show();
-			populatePage(moviesAdded);
+			populatePage(moviesAdded)
 			$('#myMovies .rowOrient').html(populateHTML);
-
-	  }else {
+			$('#myMovies').removeClass('hidden');
+			$('#myMovies').show();
+	  } else {
 	    $(".loginpage").removeClass("hidden");
 			$(".logout").addClass("hidden");
 			$('#myMovies').hide();
-
-
 		}
 	})
-
-
-	//
-	// $('.add').hide();
-	// $('#searchView').hide('slow');
-	// $('#homeBody').hide();
-	// $('#myMovies').show();
-	// populatePage(moviesAdded);
-	// $('#myMovies .rowOrient').html(populateHTML);
 });
 
-$('.loginpage').hide();
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
@@ -191,8 +184,6 @@ function populateInitialPage() {
 		populatePage(data);
 		$('#homeBody .rowOrient').html(populateHTML);
   		});
-  		$('button.add').click(addMovie);
-		$('button.remove').click(removeMovie);
 	}
 
 /***************************************************
@@ -203,82 +194,38 @@ function populateMyMoviesPage() {
 	getjson('https://user-enter-luke.firebaseio.com/.json')
 	p.then(function(data) {
 		if (data !== null) {
-			console.log(data.users.movies.movies)
-			for (var i = 0; i < data.users.movies.movies.length; i++) {
-				moviesAdded.push(data.users.movies.movies[i])
+			console.log(data.users)
+			for (var i = 0; i < data.users[userID].movies.length; i++) {
+				console.log(data)
+				moviesAdded.push(data.users[userID].movies[i])
 			}
 		}
   	});
-  	$('button.add').click(addMovie);
-	$('button.remove').click(removeMovie);
 }
-
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
 ****************************************************/
 
 function saveNewUser() {
-	var user = {};
-	// var userName = $('.input').val();
-	var userName = 'movies'
-	user[userName] = {
-					 // user : 
-					 movies : moviesAdded
-					 }
-	console.log(user)
-	var p2 = new Promise(function(resolve,reject) {
-		$.ajax({
-			type: 'PUT',
-			url: 'https://user-enter-luke.firebaseio.com/users.json',
-			data: JSON.stringify(user),
-			success: function(response) {
-				$('#savedPopUp').show('slow')
-				setTimeout(function() {
-					$('#savedPopUp').hide('slow')
-				}, 3000)
-			}
-		});
-	});
+    var user = {};
+    user[userID] = {
+                     movies : moviesAdded
+                     }
+    console.log(user)
+    var p2 = new Promise(function(resolve,reject) {
+        $.ajax({
+            type: 'PATCH',
+            url: 'https://user-enter-luke.firebaseio.com/users.json',
+            data: JSON.stringify(user),
+            success: function(response) {
+                $('#savedPopUp').show('slow')
+                setTimeout(function() {
+                    $('#savedPopUp').hide('slow')
+                }, 3000)
+            }
+        });
+    });
 }
-
-// function saveMovieInfo() {
-// 	var user = {};
-// 	var movies = 'movies';
-// 	user[movies] = moviesAdded
-// 	var p2 = new Promise(function(resolve,reject) {
-// 		$.ajax({
-// 			type: 'POST',
-// 			url: 'https://user-enter-luke.firebaseio.com/users.json',
-// 			data: JSON.stringify(user),
-// 			success: function(response) {
-// 				$('#savedPopUp').show('slow')
-// 				setTimeout(function() {
-// 					$('#savedPopUp').hide('slow');
-// 				}, 5000)
-// 			}
-// 		});
-// 	});
-// }
-
-
-// function getUserInfo() {
-// 	var userInput = $('.input').val();
-// 	var myMoviesHTML = ''
-// 	$.ajax({
-// 		type: 'GET',
-// 		url: 'https://user-enter-luke.firebaseio.com/users/' + userInput + '.json',
-// 		success: function(response) {
-// 			for (var i = 0; i < response.movies.length; i++) {
-// 				if (moviesAdded.includes(response.movies[i]) === false) {
-// 					moviesAdded.push(response.movies[i]);
-// 					myMoviesHTML += `<img class="animated rotateInDownLeft" src="${moviesAdded[i].Poster}">`;
-// 					console.log(moviesAdded)
-// 				}
-// 			}
-// 			$("#area").html(myMoviesHTML);
-// 		}
-// 	});
-// }
 
 /***************************************************
 	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
@@ -291,60 +238,58 @@ function returnMovieID(obj, ID) {
 }
 
 function addMovie(e) {
-	console.log(e.target.parentElement.parentElement.parentElement)
-	movieID = returnMovieID(data, 'imdbID');
-	for (var i = 0; i < moviesAdded.length; i++) {
-		checkID = returnMovieID(moviesAdded[i], 'imdbID');
-		if (checkID !== movieID) {
-			IDArray.push(checkID)
-			console.log(movieID)
-		} else {
-			console.log('break')
-		}
-	}
-	if (IDArray.includes(movieID) === false) {
-		IDArray.push(movieID)
-		moviesAdded.push(data)
-		IDArray = [];
-	} else {
-		console.log('hello')
-	}
+var count = 0
+
+    movieID = returnMovieID(data, 'imdbID');
+    console.log(movieID)
+    for (var i = 0; i < moviesAdded.length; i++) {
+        checkID = returnMovieID(moviesAdded[i], 'imdbID');
+        if (checkID === movieID) {
+            count += 1;
+        }
+
+    }
+    if (count === 0) {
+        moviesAdded.push(data)
+    } else {
+        console.log("Did not add movie")
+    }
 }
 
+
+
+
 function removeMovie(e) {
-	$(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
-	console.log(data)
-	var index = moviesAdded.indexOf(data)
-	console.log(index)
-	if ($.inArray(searchData, moviesAdded) !== -1) {
-		var index = moviesAdded.indexOf(data);
-		moviesAdded.splice(index, 1);
-		// console.log(moviesAdded)
-		console.log($(this))
-	} else {
-		// console.log(index)
-	}
+    // $(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
+    var count = 0
+    movieID = returnMovieID(data, 'imdbID');
 
-
-// function checkIfAdded() {
-// 	if ($.inArray(data, moviesAdded) !== -1) {
-
-// 	}
-// }
+    for (var i = 0; i < moviesAdded.length; i++) {
+        checkID = returnMovieID(moviesAdded[i], 'imdbID');
+        if (checkID != movieID) {
+            count += 1;
+        }
+        if (checkID === movieID) {
+        moviesAdded.splice(count, 1);
+        console.log(moviesAdded)
+        console.log("removed movie")
+        } else {
+            console.log("Could not find")
+        }
+    }
+}
 
 function searchMovie() {
 	populateHTML = '';
 	currentMovies = [];
 	var movieTitle = $('.input-sm').val();
 	getjson('http://www.omdbapi.com/?t=' + movieTitle);
-	p.then(function(val) {		searchData = val;
+	p.then(function(val) {		
+		searchData = val;
 	}).then(function() {
 		currentMovies.push(searchData);
-		// checkIfAdded();
 		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
-		$('button.add').click(addMovie);
-		$('button.remove').click(removeMovie);
 	});
 };
 
@@ -352,53 +297,52 @@ function searchMovie() {
 			EVENT LISTENERS
 ********************************************/
 
-// $('.sign-in').click(getUserInfo);
-
 $('.searchBtn').click(searchMovie);
-
 $('.save').click(saveNewUser);
-
-// $('.save').click(function() {
-// 	saveMovieInfo();
-// })
-
+$('.movie-viewed').click(function() {
+	console.log($('.movie-viewed'))
+});
+$(document).click(function(e) {
+	if (e.target.className === "add btn btn-primary") {
+		addMovie();
+	}
+});
+$(document).click(function(e) {
+	if (e.target.className === "remove btn btn-danger") {
+		removeMovie();
+	}
+});
 
 /*******************************************
 			FIREBASE LOG INFO
 ********************************************/
 
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyDdh5jo2nV2Ke1gKqvp-sx6M9KpcLhaXVc",
-    authDomain: "user-enter-luke.firebaseapp.com",
-    databaseURL: "https://user-enter-luke.firebaseio.com",
-    storageBucket: "user-enter-luke.appspot.com",
-    messagingSenderId: "605457594295"
-  };
-  firebase.initializeApp(config);
-
+ 
 setTimeout(()=>console.log(firebase.auth().currentUser), 1000)
 
+firebase.auth().onAuthStateChanged(()=> {
+  if (firebase.auth().currentUser !== null) {
+    // var email = firebase.auth().currentUser.email
+    $(".loginpage").addClass("hidden");
+	$(".logout").removeClass("hidden");
+	userID = firebase.auth().currentUser.uid;
+	currentUserEmail = firebase.auth().currentUser.email;
+	$('#signOut').text(`Sign Out ${currentUserEmail.slice('@', 4)}`)
+	populateMyMoviesPage();
+	$(".logout").addClass("hidden");
+  }
+})
 
 
 
-// firebase.auth().onAuthStateChanged(()=> {
-//   if (firebase.auth().currentUser !== null) {
-//     // var email = firebase.auth().currentUser.email
-//     $(".loginpage").addClass("hidden");
-// 		$(".logout").removeClass("hidden");
-//   }else {
-//     $(".loginpage").removeClass("hidden");
-// 		$(".logout").addClass("hidden");
-//   }
-// })
+
 
 
 $(".loginpage form").submit((e)=> {
 
   var email = $('input[type="email"]').val();
   var pass = $('input[type="password"]').val();
-
+  // $('#myMovies').show();
   firebase.auth().signInWithEmailAndPassword(email, pass).then(()=> {
     $('input[type="email"]').val(``);
     $('input[type="password"]').val(``);
@@ -409,10 +353,8 @@ $(".loginpage form").submit((e)=> {
     var fullError = `${errorCode}: ${errorMessage}`
     alert(fullError)
   });
-
-console.log(firebase.auth().currentUser)
-e.preventDefault();
-
+	console.log(firebase.auth().currentUser)
+	e.preventDefault();
 });
 
 
@@ -435,11 +377,9 @@ $("#register").click((e)=> {
 });
 
 
-
-//
 $("#signOut").click((e) => {
   firebase.auth().signOut().then(()=> {
+  	moviesAdded = [];
     console.log(firebase.auth().currentUser);
-
   })
 })
