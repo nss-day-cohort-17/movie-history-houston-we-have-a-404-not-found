@@ -8,6 +8,9 @@ var data;
 let populateHTML;
 var currentMovies = [];
 let searchData;
+var movieID;
+let checkID;
+let IDArray = [];
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
@@ -29,6 +32,8 @@ function getjson(url) {
 	});
 	p.then(function(val) {
 		data = val;
+		$('.add').click(addMovie);
+		$('.remove').click(removeMovie);
 		// $('.example').barrating('set', Math.round(data.imdbRating));
 	})
 }
@@ -38,7 +43,7 @@ function populatePage(myArray) {
 	for (var i = 0; i < myArray.length; i++) {
   			 populateHTML += `
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-  			 <div class="animated fadeInLeft col-xs-1 card topborder">
+  			 <div id="${myArray[i].imdbID}" class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${myArray[i].Title}</h3>
 				</div>
@@ -77,11 +82,20 @@ function populatePage(myArray) {
 			</div>
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
   	}
+  	$('.add').click(addMovie);
+		$('.remove').click(removeMovie);
 }
 
 /***************************************************
 				INITIAL HIDES/SHOWS
 ****************************************************/
+
+$('.linkstyle').mouseover(function() {
+	$(this).addClass('pulse');
+})
+$('.linkstyle').mouseleave(function() {
+	$(this).removeClass('pulse');
+})
 
 $('#searchView').hide();
 $('#myMovies').hide();
@@ -105,7 +119,7 @@ $('.search').click(function(e) {
 	$('#myMovies').hide();
 	setTimeout(function() {
 		$('.card').hide();
-		$('#searchView').show('slow');
+		$('#searchView').show();
 	})
 });
 
@@ -165,6 +179,8 @@ $('.myMovie').click(function(e) {
 	// $('#myMovies .rowOrient').html(populateHTML);
 });
 
+$('.loginpage').hide();
+
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
@@ -206,6 +222,7 @@ function saveNewUser() {
 	// var userName = $('.input').val();
 	var userName = 'movies'
 	user[userName] = {
+					 // user : 
 					 movies : moviesAdded
 					 }
 	console.log(user)
@@ -267,23 +284,37 @@ function saveNewUser() {
 	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
 ****************************************************/
 
+function returnMovieID(obj, ID) {
+	for (var key in data) {
+		return obj[ID];
+	}
+}
+
 function addMovie(e) {
-	console.log(data)
-	var index = moviesAdded.indexOf(data)
-	console.log(index)
-	if ($.inArray(data, moviesAdded) === -1) {
-		moviesAdded.push(data);
-		console.log(moviesAdded)
-		$(this).html('added!')
-		$(this).attr('disabled', true)
+	console.log(e.target.parentElement.parentElement.parentElement)
+	movieID = returnMovieID(data, 'imdbID');
+	for (var i = 0; i < moviesAdded.length; i++) {
+		checkID = returnMovieID(moviesAdded[i], 'imdbID');
+		if (checkID !== movieID) {
+			IDArray.push(checkID)
+			console.log(movieID)
+		} else {
+			console.log('break')
+		}
+	}
+	if (IDArray.includes(movieID) === false) {
+		IDArray.push(movieID)
+		moviesAdded.push(data)
+		IDArray = [];
 	} else {
-		console.log(data)
+		console.log('hello')
 	}
 }
 
 function removeMovie(e) {
+	$(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
 	console.log(data)
-	// var index = moviesAdded.indexOf(data)
+	var index = moviesAdded.indexOf(data)
 	console.log(index)
 	if ($.inArray(searchData, moviesAdded) !== -1) {
 		var index = moviesAdded.indexOf(data);
@@ -293,7 +324,7 @@ function removeMovie(e) {
 	} else {
 		// console.log(index)
 	}
-}
+
 
 // function checkIfAdded() {
 // 	if ($.inArray(data, moviesAdded) !== -1) {
@@ -306,8 +337,7 @@ function searchMovie() {
 	currentMovies = [];
 	var movieTitle = $('.input-sm').val();
 	getjson('http://www.omdbapi.com/?t=' + movieTitle);
-	p.then(function(val) {
-		searchData = val;
+	p.then(function(val) {		searchData = val;
 	}).then(function() {
 		currentMovies.push(searchData);
 		// checkIfAdded();
@@ -319,25 +349,8 @@ function searchMovie() {
 };
 
 /*******************************************
-		JQUERY STAR RATING CODE
-********************************************/
-$('.example').barrating('show', {
-  theme: 'my-awesome-theme',
-  onSelect: function(value, text, event) {
-    if (typeof(event) !== 'undefined') {
-
-    } else {
-
-    }
-  }
-});
-/*******************************************
 			EVENT LISTENERS
 ********************************************/
-
-$('button.add').click(addMovie)
-
-$('button.remove').click(removeMovie);
 
 // $('.sign-in').click(getUserInfo);
 
