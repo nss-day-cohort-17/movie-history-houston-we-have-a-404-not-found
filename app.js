@@ -95,7 +95,7 @@ $('.search').click(function(e) {
 		$(".loginpage").addClass("hidden");
 	}else {
 		$(".loginpage").addClass("hidden");
-		$(".logout").addClass("hidden");
+		$(".logout").addClass("fadeOutUp hidden");
 	}
 })
 
@@ -118,7 +118,7 @@ $('.home').click(function(e) {
 			$(".loginpage").addClass("hidden");
 		}else {
 			$(".loginpage").addClass("hidden");
-			$(".logout").addClass("hidden");
+			$(".logout").addClass(" fadeOutUp hidden");
 		}
 	})
 
@@ -150,7 +150,7 @@ $('.myMovie').click(function(e) {
 	    $(".loginpage").removeClass("hidden");
 			$(".logout").addClass("hidden");
 			$('#myMovies').hide();
-			
+
 
 		}
 	})
