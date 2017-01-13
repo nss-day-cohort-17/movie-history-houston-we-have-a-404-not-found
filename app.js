@@ -1,6 +1,7 @@
 /***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
+
 var p;
 var moviesAdded = [];
 var data;
@@ -79,7 +80,6 @@ function populatePage(myArray) {
 					</div>
 				</div>
 			</div>
-
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
   	}
 }
@@ -92,6 +92,7 @@ $('#searchView').hide();
 $('#myMovies').hide();
 $('#savedPopUp').hide()
 $('.search').click(function(e) {
+	// $('.add').hide();
 	// $('.card').addClass('animated')
 	// $('.card').show();
 	$('#myMovies').hide();
@@ -109,7 +110,7 @@ $('.home').click(function(e) {
 });
 
 $('.myMovie').click(function(e) {
-
+	$('.add').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
 	$('#myMovies').show();
@@ -127,6 +128,8 @@ function populateInitialPage() {
 		populatePage(data);
 		$('#homeBody .rowOrient').html(populateHTML);
   		});
+  		$('button.add').click(addMovie);
+		$('button.remove').click(removeMovie);
 	}
 
 /***************************************************
@@ -143,6 +146,8 @@ function populateMyMoviesPage() {
 			}
 		}
   	});
+  	$('button.add').click(addMovie);
+	$('button.remove').click(removeMovie);
 }
 
 /***************************************************
@@ -163,7 +168,10 @@ function saveNewUser() {
 			url: 'https://user-enter-luke.firebaseio.com/users.json',
 			data: JSON.stringify(user),
 			success: function(response) {
-				console.log('success!!')
+				$('#savedPopUp').show('slow')
+				setTimeout(function() {
+					$('#savedPopUp').hide('slow')
+				}, 3000)
 			}
 		});
 	});
@@ -212,25 +220,39 @@ function saveNewUser() {
 	FUNCTIONS FOR MOVIES (ADD/SEARCH/DELETE)
 ****************************************************/
 
-function addMovie() {
-	// if ($.inArray(data, moviesAdded) < 0) {
+function addMovie(e) {
+	console.log(data)
+	var index = moviesAdded.indexOf(data)
+	console.log(index)
+	if ($.inArray(data, moviesAdded) === -1) {
 		moviesAdded.push(data);
 		console.log(moviesAdded)
-	// } else {
-	// 	console.log(data)
-	// }
+		$(this).html('added!')
+		$(this).attr('disabled', true)
+	} else {
+		console.log(data)
+	}
 }
 
-function removeMovie() {
-	var index = moviesAdded.indexOf(data);
+function removeMovie(e) {
+	console.log(data)
+	// var index = moviesAdded.indexOf(data)
 	console.log(index)
-	// if ($.inArray(data, moviesAdded) !== -1) {
+	if ($.inArray(searchData, moviesAdded) !== -1) {
+		var index = moviesAdded.indexOf(data);
 		moviesAdded.splice(index, 1);
-		console.log(moviesAdded)
-	// } else {
-
-	// }
+		// console.log(moviesAdded)
+		console.log($(this))
+	} else {
+		// console.log(index)
+	}
 }
+
+// function checkIfAdded() {
+// 	if ($.inArray(data, moviesAdded) !== -1) {
+	
+// 	}
+// }
 
 function searchMovie() {
 	populateHTML = '';
@@ -241,6 +263,7 @@ function searchMovie() {
 		searchData = val;
 	}).then(function() {
 		currentMovies.push(searchData);
+		// checkIfAdded();
 		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
 		$('button.add').click(addMovie);
@@ -265,7 +288,7 @@ $('.example').barrating('show', {
 			EVENT LISTENERS
 ********************************************/
 
-$('button.add').click(addMovie);
+$('button.add').click(addMovie)
 
 $('button.remove').click(removeMovie);
 
