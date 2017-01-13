@@ -34,12 +34,16 @@ body{
     #e0ebeb,
     #b1cdcd 75%
   );
-  color: maroon;
+  /*color: maroon;*/
+  color: #c20a0a;
+
 }
 
 a:link {
   text-decoration: none;
-  color: maroon;
+  /*color: maroon;*/
+  color: #c20a0a;
+
 }
 
 .linkstyle:hover {
@@ -51,7 +55,8 @@ a:link {
 .linkstyle:visited {
   text-decoration: none;
   /*color: #748c9c;*/
-  color: maroon;
+  /*color: maroon;*/
+  color: #c20a0a;
 }
 
 
@@ -69,7 +74,7 @@ a:link {
   background-image: linear-gradient(#639c9c,transparent),
                     linear-gradient(#639c9c,transparent);
   background-size: 3px 100%;
-  /*background-position: 0 0, 100% 0;*/
+  background-position: 0 0, 100% 0;
   background-repeat: no-repeat;
   /*border-image: linear-gradient(to bottom, #639c9c, rgba(0, 0, 0, 0)) 1 100%;*/
   font-family: 'Luckiest Guy', cursive;
@@ -99,7 +104,7 @@ a:link {
   min-width: 260px;
   font-size: .75em;
   box-shadow: 5px 5px 5px rgba(0,0,0, .5);
-  font-family: 'Luckiest Guy', cursive;
+  /*font-family: 'Luckiest Guy', cursive;*/
 }
 
 .rowOrient {
@@ -112,6 +117,7 @@ a:link {
   margin: 5px 3px;
   padding: 2px 7px;
   /*background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);*/
+  font-family: 'Luckiest Guy', cursive;
 }
 
 .cardHeaders {
@@ -161,7 +167,7 @@ a:link {
 }
 
 .btn-primary {
-  background-color: #90bbbb;
+  background-color: #71a8a8; /*was #90bbbb*/
   border-color: #639c9c;
 }
 
