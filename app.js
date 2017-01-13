@@ -280,5 +280,79 @@ $('.save').click(saveNewUser);
 			FIREBASE LOG INFO
 ********************************************/
 
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDdh5jo2nV2Ke1gKqvp-sx6M9KpcLhaXVc",
+    authDomain: "user-enter-luke.firebaseapp.com",
+    databaseURL: "https://user-enter-luke.firebaseio.com",
+    storageBucket: "user-enter-luke.appspot.com",
+    messagingSenderId: "605457594295"
+  };
+  firebase.initializeApp(config);
 
 setTimeout(()=>console.log(firebase.auth().currentUser), 1000)
+
+
+
+
+firebase.auth().onAuthStateChanged(()=> {
+  if (firebase.auth().currentUser !== null) {
+    var email = firebase.auth().currentUser.email
+    $(".loginpage").addClass("hidden");
+		$(".logout").removeClass("hidden");
+  }else {
+    $(".loginpage").removeClass("hidden");
+		$(".logout").addClass("hidden");
+  }
+})
+
+
+$(".loginpage form").submit((e)=> {
+
+  var email = $('input[type="email"]').val();
+  var pass = $('input[type="password"]').val();
+
+  firebase.auth().signInWithEmailAndPassword(email, pass).then(()=> {
+    $('input[type="email"]').val(``);
+    $('input[type="password"]').val(``);
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    var fullError = `${errorCode}: ${errorMessage}`
+    alert(fullError)
+  });
+
+console.log(firebase.auth().currentUser)
+e.preventDefault();
+
+});
+
+
+$("#register").click((e)=> {
+  var email = $('input[type="email"]').val();
+  var pass = $('input[type="password"]').val();
+
+  firebase.auth().createUserWithEmailAndPassword(email, pass).then(()=> {
+    $('input[type="email"]').val(``);
+    $('input[type="password"]').val(``);
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    var fullError = `${errorCode}: ${errorMessage}`
+    alert(fullError)
+  });
+  e.preventDefault();
+
+});
+
+
+
+//
+$("#signOut").click((e) => {
+  firebase.auth().signOut().then(()=> {
+    console.log(firebase.auth().currentUser);
+
+  })
+})
