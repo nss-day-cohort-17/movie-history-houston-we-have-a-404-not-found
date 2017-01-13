@@ -107,9 +107,11 @@ $('.search').click(function(e) {
 	if (firebase.auth().currentUser !== null) {
 		// var email = firebase.auth().currentUser.email
 		$(".loginpage").addClass("hidden");
+		$(".logout").removeClass("hidden");
+
 	}else {
 		$(".loginpage").addClass("hidden");
-		$(".logout").addClass("fadeOutUp hidden");
+		$(".logout").addClass("hidden");
 	}
 })
 
@@ -130,9 +132,11 @@ $('.home').click(function(e) {
 		if (firebase.auth().currentUser !== null) {
 			// var email = firebase.auth().currentUser.email
 			$(".loginpage").addClass("hidden");
+			$(".logout").removeClass("hidden");
+
 		}else {
 			$(".loginpage").addClass("hidden");
-			$(".logout").addClass(" fadeOutUp hidden");
+			$(".logout").addClass("hidden");
 		}
 	})
 
@@ -155,6 +159,7 @@ $('.myMovie').click(function(e) {
 	    // var email = firebase.auth().currentUser.email
 	    $(".loginpage").addClass("hidden");
 			$(".logout").removeClass("hidden");
+			console.log("user")
 
 			$('#myMovies').show();
 			populatePage(moviesAdded);
@@ -164,7 +169,7 @@ $('.myMovie').click(function(e) {
 	    $(".loginpage").removeClass("hidden");
 			$(".logout").addClass("hidden");
 			$('#myMovies').hide();
-
+console.log("no user")
 
 		}
 	})
@@ -179,7 +184,7 @@ $('.myMovie').click(function(e) {
 	// $('#myMovies .rowOrient').html(populateHTML);
 });
 
-$('.loginpage').hide();
+// $('.loginpage').hide();
 
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
@@ -222,7 +227,7 @@ function saveNewUser() {
 	// var userName = $('.input').val();
 	var userName = 'movies'
 	user[userName] = {
-					 // user : 
+					 // user :
 					 movies : moviesAdded
 					 }
 	console.log(user)
@@ -330,7 +335,7 @@ function removeMovie(e) {
 // 	if ($.inArray(data, moviesAdded) !== -1) {
 
 // 	}
-// }
+}
 
 function searchMovie() {
 	populateHTML = '';
@@ -381,6 +386,16 @@ setTimeout(()=>console.log(firebase.auth().currentUser), 1000)
 
 
 
+
+firebase.auth().onAuthStateChanged(()=> {
+  if (firebase.auth().currentUser !== null) {
+    // var email = firebase.auth().currentUser.email
+    $(".loginpage").addClass("hidden");
+		$(".logout").removeClass("hidden");
+  }else {
+		$(".logout").addClass("hidden");
+  }
+})
 
 // firebase.auth().onAuthStateChanged(()=> {
 //   if (firebase.auth().currentUser !== null) {
