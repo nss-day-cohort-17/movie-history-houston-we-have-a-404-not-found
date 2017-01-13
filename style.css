@@ -1,6 +1,6 @@
 body{
-  font-family: 'Varela Round', sans-serif;
-  /*background: radial-gradient( rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.49) ), center/cover no-repeat fixed url(http://screencrush.com/442/files/2016/03/o-THEATER-SEATS-facebook.jpg);*/
+font-family: 'Comfortaa', cursive;
+  background: radial-gradient( rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.49) ), center/cover no-repeat fixed url(http://screencrush.com/442/files/2016/03/o-THEATER-SEATS-facebook.jpg);
 
 }
 .mainbody {
@@ -29,17 +29,15 @@ body{
   margin: 1px 3px;
   padding: auto;
   /*color: #748c9c;*/
-  background-image:
+ /* background-image:
   radial-gradient(
     #e0ebeb,
     #b1cdcd 75%
-  );
-  color: maroon;
+  );*/
 }
 
 a:link {
   text-decoration: none;
-  color: maroon;
 }
 
 .linkstyle:hover {
@@ -50,15 +48,14 @@ a:link {
 
 .linkstyle:visited {
   text-decoration: none;
-  /*color: #748c9c;*/
-  color: maroon;
+  color: #748c9c;
 }
 
 
 .linkstyle:active {
   text-decoration: none;
-  /*color: #748c9c;*/
-  color: maroon;
+  color: #748c9c;
+  /*color: maroon;*/
 }
 
 .topbar {
@@ -72,7 +69,6 @@ a:link {
   /*background-position: 0 0, 100% 0;*/
   background-repeat: no-repeat;
   /*border-image: linear-gradient(to bottom, #639c9c, rgba(0, 0, 0, 0)) 1 100%;*/
-  font-family: 'Luckiest Guy', cursive;
 }
 
 .searchButton {
@@ -99,7 +95,6 @@ a:link {
   min-width: 260px;
   font-size: .75em;
   box-shadow: 5px 5px 5px rgba(0,0,0, .5);
-  font-family: 'Luckiest Guy', cursive;
 }
 
 .rowOrient {
