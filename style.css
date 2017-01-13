@@ -28,28 +28,37 @@ body{
   text-decoration: none
   margin: 1px 3px;
   padding: auto;
-  color: #748c9c;
+  /*color: #748c9c;*/
   background-image:
   radial-gradient(
     #e0ebeb,
     #b1cdcd 75%
   );
+  color: maroon;
+}
+
+a:link {
+  text-decoration: none;
+  color: maroon;
 }
 
 .linkstyle:hover {
   text-decoration: none;
   color: #283e3e
+  /*color: maroon;*/
 }
 
 .linkstyle:visited {
   text-decoration: none;
-  color: #748c9c;
+  /*color: #748c9c;*/
+  color: maroon;
 }
 
 
 .linkstyle:active {
   text-decoration: none;
-  color: #748c9c;
+  /*color: #748c9c;*/
+  color: maroon;
 }
 
 .topbar {
@@ -60,9 +69,10 @@ body{
   background-image: linear-gradient(#639c9c,transparent),
                     linear-gradient(#639c9c,transparent);
   background-size: 3px 100%;
-  background-position: 0 0, 100% 0;
+  /*background-position: 0 0, 100% 0;*/
   background-repeat: no-repeat;
   /*border-image: linear-gradient(to bottom, #639c9c, rgba(0, 0, 0, 0)) 1 100%;*/
+  font-family: 'Luckiest Guy', cursive;
 }
 
 .searchButton {
@@ -89,7 +99,7 @@ body{
   min-width: 260px;
   font-size: .75em;
   box-shadow: 5px 5px 5px rgba(0,0,0, .5);
-
+  font-family: 'Luckiest Guy', cursive;
 }
 
 .rowOrient {
