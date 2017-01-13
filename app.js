@@ -54,7 +54,7 @@ function populatePage(myArray) {
 				<div class="actorbox">
 					<h4>${myArray[i].Actors}</h4>
 				</div>
-				<div class="plot"> 
+				<div class="plot">
 					${myArray[i].Plot}
 				</div>
 				<div class="bottomBar">
@@ -101,6 +101,18 @@ $('#searchView').hide();
 $('#myMovies').hide();
 $('#savedPopUp').hide()
 $('.search').click(function(e) {
+
+	firebase.auth().onAuthStateChanged(()=> {
+
+	if (firebase.auth().currentUser !== null) {
+		// var email = firebase.auth().currentUser.email
+		$(".loginpage").addClass("hidden");
+	}else {
+		$(".loginpage").addClass("hidden");
+		$(".logout").addClass("fadeOutUp hidden");
+	}
+})
+
 	// $('.add').hide();
 	// $('.card').addClass('animated')
 	// $('.card').show();
@@ -112,6 +124,19 @@ $('.search').click(function(e) {
 });
 
 $('.home').click(function(e) {
+
+	firebase.auth().onAuthStateChanged(()=> {
+
+		if (firebase.auth().currentUser !== null) {
+			// var email = firebase.auth().currentUser.email
+			$(".loginpage").addClass("hidden");
+		}else {
+			$(".loginpage").addClass("hidden");
+			$(".logout").addClass(" fadeOutUp hidden");
+		}
+	})
+
+
 	$('#myMovies').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').show();
@@ -119,12 +144,39 @@ $('.home').click(function(e) {
 });
 
 $('.myMovie').click(function(e) {
+
+	$('.add').hide();
+	$('#myMovies').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
-	$('#myMovies').show();
-	populatePage(moviesAdded);
-	$('.addButton').hide();
-	$('#myMovies .rowOrient').html(populateHTML);
+
+	firebase.auth().onAuthStateChanged(()=> {
+	  if (firebase.auth().currentUser !== null) {
+	    // var email = firebase.auth().currentUser.email
+	    $(".loginpage").addClass("hidden");
+			$(".logout").removeClass("hidden");
+
+			$('#myMovies').show();
+			populatePage(moviesAdded);
+			$('#myMovies .rowOrient').html(populateHTML);
+
+	  }else {
+	    $(".loginpage").removeClass("hidden");
+			$(".logout").addClass("hidden");
+			$('#myMovies').hide();
+
+
+		}
+	})
+
+
+	//
+	// $('.add').hide();
+	// $('#searchView').hide('slow');
+	// $('#homeBody').hide();
+	// $('#myMovies').show();
+	// populatePage(moviesAdded);
+	// $('#myMovies .rowOrient').html(populateHTML);
 });
 
 $('.loginpage').hide();
@@ -273,15 +325,19 @@ function removeMovie(e) {
 		// console.log(index)
 	}
 
-}
+
+// function checkIfAdded() {
+// 	if ($.inArray(data, moviesAdded) !== -1) {
+
+// 	}
+// }
 
 function searchMovie() {
 	populateHTML = '';
 	currentMovies = [];
 	var movieTitle = $('.input-sm').val();
 	getjson('http://www.omdbapi.com/?t=' + movieTitle);
-	p.then(function(val) {
-		searchData = val;
+	p.then(function(val) {		searchData = val;
 	}).then(function() {
 		currentMovies.push(searchData);
 		// checkIfAdded();
@@ -326,16 +382,16 @@ setTimeout(()=>console.log(firebase.auth().currentUser), 1000)
 
 
 
-firebase.auth().onAuthStateChanged(()=> {
-  if (firebase.auth().currentUser !== null) {
-    var email = firebase.auth().currentUser.email
-    $(".loginpage").addClass("hidden");
-		$(".logout").removeClass("hidden");
-  }else {
-    $(".loginpage").removeClass("hidden");
-		$(".logout").addClass("hidden");
-  }
-})
+// firebase.auth().onAuthStateChanged(()=> {
+//   if (firebase.auth().currentUser !== null) {
+//     // var email = firebase.auth().currentUser.email
+//     $(".loginpage").addClass("hidden");
+// 		$(".logout").removeClass("hidden");
+//   }else {
+//     $(".loginpage").removeClass("hidden");
+// 		$(".logout").addClass("hidden");
+//   }
+// })
 
 
 $(".loginpage form").submit((e)=> {
