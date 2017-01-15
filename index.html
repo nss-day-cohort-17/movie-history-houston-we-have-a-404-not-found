@@ -9,48 +9,58 @@
 	<!-- <link rel="stylesheet" type="text/css" href="animate.css"> -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Exo" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Exo|Permanent+Marker|Righteous" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid mainBody">
-		<div class="navbar topbar topborder">
+		<div class="navbar navbar-fixed-top topbar topborder">
 			<div class="row topFlexDiv">
 				<div class="col-md-2 topSpacer">
-					<a class="home" href="#"><h3 class="linkstyle animated infinite">> Home</h3></a>
+					<a class="home" href="#"><h3 class="linkstyle animated infinite">Home</h3></a>
 				</div>
 				<div class="col-md-2 topSpacer">
-					<a class="search" href="#"><h3 class="linkstyle animated infinite">> Search</h3></a>
+					<a class="search" href="#"><h3 class="linkstyle animated infinite">Search</h3></a>
 				</div>
 				<div class="col-md-2 topSpacer">
-					<a class="myMovie" href="#"><h3 class="linkstyle animated infinite">> My Movies</h3></a>
+					<a class="myMovie" href="#"><h3 class="linkstyle animated infinite">My Movies</h3></a>
 				</div>
-				<div class="col-md-2 topSpacer">
+				<div class="col-xs-2 topSpacer">
+					<h3 class="movieHist">Movie History</h3>
+				</div>
+				<div class="col-md-1 topSpacer">
 					<img class="logo" src="images/movie.jpeg">
-				</div>
-				<div class="col-md-2 topSpacer">
-					<h3 class="linkstyle">Movie History</h3>
 				</div>
 			</div>
 		</div>
 
-		<div class="loginpage hidden animated fadeInLeft">
-			<h1>Login</h1>
-		  <form>
-		    <input id="username" class="input-control" type="email" maxlength="25" placeholder="username">
-		    <input id="password" class="input-control" type="password" maxlength="25" placeholder="password">
-		    <button class="btn btn-primary" id="login" type="submit">Login</button>
-		    <button class="btn btn-danger" id="register">Register</button>
-		  </form>
+		<div class="loginpage container hidden animated fadeInLeft">
+			<div class="row">
+				<div class="col-xs-offset-4">
+				  <h1>Login</h1>
+				  <form>
+				    <input id="username" class="input-group" type="email" maxlength="25" placeholder="username"><br>
+				    <input id="password" class="input-group" type="password" maxlength="25" placeholder="password"><br>
+				    <button class="btn btn-primary" id="login" type="submit">Login</button>
+				    <button class="btn btn-danger" id="register">Register</button>
+				  </form>
+				</div>
+			</div>
 		</div>
+
 		<div class="logout hidden animated fadeInDown">
 			<button class="btn btn-danger" id="signOut">Sign Out</button>
+			<span id="greet"></span>
 		</div>
 
 
 	<div id="searchView">
 		<div class="container">
-			<input type="text" class="search-input input-control input-sm" maxlength="40" placeholder="Search Movies!" />
-	 		<button type="submit" class="searchBtn btn btn-primary btn-sm">Search</button>
+			<div class="row">
+				<div class="col-xs-offset-4 col-x-6">
+					<input type="text" class="search-input input-control input-sm" maxlength="60" width="200px" placeholder="Search Movies!" />
+		 			<button type="submit" class="searchBtn btn btn-primary btn-sm">Search</button>
+	 			</div>
+			</div>
 		</div>
  		<div class="row rowOrient">
 
@@ -66,15 +76,26 @@
 	</div>
 
 	<div id="myMovies">
-		<button type="submit" class="save btn btn-primary btn-sm">Save</button>
-		<div id="savedPopUp">
-			Your movies have been saved!
+		<div class="container">
+			<div class="row">
+				<button type="submit" class="save col-xs-2 col-xs col-xs-offset-10 btn btn-primary btn-sm">Save</button>
+				</div>
+			<div class="row">
+				<div clas="col-xs-2 col-xs-offset-4" id="savedPopUp">
+					<span>Your movies have been saved!</span>
+				</div>
+			</div>
 		</div>
 		<div class="row rowOrient">
 
 		</div>
-
+	<div id="nothing" class="row">
+				<div class="col-xs-offset-4">
+					There's Nothing Here! 
+				</div>
+			</div>
 	</div>
+
 	</div>
 </div>
 	<script src="/bower_components/jquery/dist/jquery.js" type="text/javascript"></script>

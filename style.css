@@ -1,26 +1,29 @@
-body{
-font-family: 'Comfortaa', cursive;
-  background: radial-gradient( rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.49) ), center/cover no-repeat fixed url(http://screencrush.com/442/files/2016/03/o-THEATER-SEATS-facebook.jpg);
-
+body {
+font-family: 'Righteous', cursive;
+padding-top: 100px;
 }
-.mainbody {
-  /*height: 900px;*/
-  /*width: 900px;*/
-  /*background-color:  #d0e1e1;*/
+
+.movieHist {
+  font-size: 30px;
+   font-family: 'Permanent Marker', cursive;
+   color: #d9534f;
 }
 
 .topborder {
-  border-top: 3px solid #639c9c;
+  border-bottom: 3px solid #71a8a8;
+  /*background: rgba(0,0,0, .2);*/
+    background: rgba(255,255,255, 1)
 }
 
 .topSpacer {
-  margin: 1px 15px;
+  /*margin: 1px 15px;*/
 }
 
 .topFlexDiv {
   display: flex;
   justify-content: space-between;
   min-width: 590px;
+    /*background: linear-gradient(to bottom, white, rgba(255,255,255,.97))*/
 }
 
 .linkstyle {
@@ -29,35 +32,30 @@ font-family: 'Comfortaa', cursive;
   margin: 1px 3px;
   padding: auto;
   /*color: #748c9c;*/
- /* background-image:
+/*  background-image:
   radial-gradient(
     #e0ebeb,
     #b1cdcd 75%
-  );
-  /*color: maroon;*/
-  color: #c20a0a;
-
-
+  );*/
 }
 
 a:link {
   text-decoration: none;
   /*color: maroon;*/
-  color: #c20a0a;
-
+  color: #71a8a8;
 }
 
 .linkstyle:hover {
   text-decoration: none;
-  color: #283e3e
-  /*color: maroon;*/
+  color: rgb(2, 135, 224)
+  /*color: maroon;
 }
 
 .linkstyle:visited {
   text-decoration: none;
   /*color: #748c9c;*/
   /*color: maroon;*/
-  color: #c20a0a;
+  /*color: #c20a0a;*/
 }
 
 
@@ -68,15 +66,14 @@ a:link {
 }
 
 .topbar {
-  background-color: #b1cdcd;
-  /*border-width: 3px;*/
-  /*border-style: solid;*/
-  border-top: 3px solid #639c9c;
-  background-image: linear-gradient(#639c9c,transparent),
-                    linear-gradient(#639c9c,transparent);
+  
+  /*background: rgba(0,0,0, .2);*/
+  /*border-top: 3px solid #639c9c;*/
+  /*background-image: linear-gradient(#639c9c,transparent),
+                    linear-gradient(#639c9c,transparent);*/
   background-size: 3px 100%;
-  background-position: 0 0, 100% 0;
-  background-repeat: no-repeat;
+  /*background-position: 0 0, 100% 0;*/
+  /*background-repeat: no-repeat;*/
   /*border-image: linear-gradient(to bottom, #639c9c, rgba(0, 0, 0, 0)) 1 100%;*/
 }
 
@@ -92,10 +89,7 @@ a:link {
 
 .card {
   background-color:  #d0e1e1;
-  margin: 25px 30px;
-  /*border-width: 3px;*/
-  /*border-style: solid;*/
-  /*border-top: 3px solid #639c9c;*/
+  margin: 25px 30px;  
   background-image: linear-gradient(#639c9c,transparent),
                     linear-gradient(#639c9c,transparent);
   background-size: 3px 100%;
@@ -103,8 +97,9 @@ a:link {
   background-repeat: no-repeat;
   min-width: 260px;
   font-size: .75em;
-  box-shadow: 5px 5px 5px rgba(0,0,0, .5);
-  /*font-family: 'Luckiest Guy', cursive;*/
+  box-shadow: 10px 10px 10px rgba(0,0,0, .5);
+  border-radius: 3%;
+ border-top: 3px solid #639c9c;
 }
 
 .rowOrient {
@@ -124,14 +119,7 @@ a:link {
   size: .75em;
 }
 
-
-/*h3 {
-  margin: 3px;
-}*/
-
-
 .imageBlock{
-  /*width: 70%;*/
   display: flex;
   justify-content: center;
   /*border: 2px solid #90bbbb;*/
@@ -146,15 +134,20 @@ a:link {
 .actorbox {
   margin-top: 3px;
   padding: 5px 5px 10px;
-  /*background-image: linear-gradient(45deg,#90bbbb,#d0e1e1);*/
 }
 
 
 .plot {
   margin-top: 3px;
   padding: 0 3px;
-  /*background-image: linear-gradient(to top,#90bbbb,#d0e1e1);*/
 }
+
+.plotMO {
+  margin-top: 3px;
+  padding: 0 3px;
+  font-size: 15px;
+}
+
 .bottomBar {
   display: flex;
   justify-content: space-between;
@@ -189,20 +182,42 @@ a:link {
   width: 100%;
 }
 .addButton {
-  /*justify-content: flex-start;*/
+  justify-content: flex-start;
   padding: 7px 5px 3px;
 }
 
 .deleteButton {
-  /*justify-content: flex-end;*/
   padding: 7px 5px 3px;
-  
 }
 
-#searchField > button {
+#searchView div div div > button {
   font-size: 16px;
 }
 
-#searchField > input {
-  font-size: 16px;
+#searchView div div div > input {
+  font-size: 20px;
+}
+
+#savedPopUp > span {
+  color: #d9534f;
+  font-size: 24px;
+  margin-left: 38%;
+}
+
+.loginpage input {
+  font-size: 20px;
+}
+
+.loginpage h1 {
+  color: #d9534f;
+}
+
+#greet {
+  font-size: 20px;
+   color: #d9534f;
+}
+
+#nothingHere {
+  font-size: 20px;
+   color: #d9534f;
 }
