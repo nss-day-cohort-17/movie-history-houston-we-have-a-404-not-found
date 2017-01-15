@@ -24,13 +24,13 @@ let checkID;
 let IDArray = [];
 let userID;
 let currentUserEmail;
+let watchedMovie;
 
 /***************************************************
 	CALLING INITIAL SHOW MOVIES FUNCTION
 ****************************************************/
 
 populateInitialPage();
-// populateMyMoviesPage();
 
 /***************************************************
 				TEMPLATE WORKHORSE FUNCTIONS
@@ -45,13 +45,14 @@ function getjson(url) {
 	});
 	p.then(function(val) {
 		data = val;
-		console.log(data)
 	})
 }
 
+
+
 function populatePage(myArray) {
-	populateHTML = '';
-	for (var i = 0; i < myArray.length; i++) {
+  		populateHTML = '';
+  		for (var i = 0; i < myArray.length; i++) {
   			 populateHTML += `
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   			 <div id="${myArray[i].imdbID}" class="animated fadeInLeft col-xs-1 card topborder">
@@ -87,7 +88,7 @@ function populatePage(myArray) {
 						<button class="add btn btn-primary">add</button>
 					</div>
 					<div class="deleteButton">
-						<button class="remove btn btn-danger">delete</button>
+						<button class="remove btn btn-danger">remove</button>
 					</div>
 				</div>
 			</div>
@@ -106,9 +107,11 @@ $('.linkstyle').mouseleave(function() {
 	$(this).removeClass('pulse');
 })
 
+$('.save').hide('slow');
 $('#searchView').hide();
 $('#myMovies').hide();
 $('#savedPopUp').hide()
+$('#nothing').hide()
 $('.search').click(function(e) {
 
 firebase.auth().onAuthStateChanged(()=> {
@@ -119,7 +122,7 @@ firebase.auth().onAuthStateChanged(()=> {
 		$(".logout").removeClass("hidden");
 	}else {
 		$(".loginpage").addClass("hidden");
-		$(".logout").addClass("fadeOutUp hidden");
+		$(".logout").addClass("hidden");
 	}
 })
 	$('#myMovies').hide();
@@ -132,18 +135,14 @@ firebase.auth().onAuthStateChanged(()=> {
 $('.home').click(function(e) {
 
 	firebase.auth().onAuthStateChanged(()=> {
-
 		if (firebase.auth().currentUser !== null) {
-			// var email = firebase.auth().currentUser.email
 			$(".loginpage").addClass("hidden");
 			$(".logout").removeClass("hidden");
-		}else {
+		} else {
 			$(".loginpage").addClass("hidden");
 			$(".logout").addClass("hidden");
 		}
 	})
-
-
 	$('#myMovies').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').show();
@@ -152,7 +151,6 @@ $('.home').click(function(e) {
 
 
 $('.myMovie').click(function(e) {
-	$('.add').hide();
 	$('#searchView').hide('slow');
 	$('#homeBody').hide();
 
@@ -163,12 +161,12 @@ $('.myMovie').click(function(e) {
 			$(".logout").removeClass("hidden");
 			populatePage(moviesAdded)
 			$('#myMovies .rowOrient').html(populateHTML);
-			$('#myMovies').removeClass('hidden');
+			// $('#myMovies').removeClass('hidden');
 			$('#myMovies').show();
 	  } else {
 	    $(".loginpage").removeClass("hidden");
-			$(".logout").addClass("hidden");
-			$('#myMovies').hide();
+		$(".logout").addClass("hidden");
+		$('#myMovies').hide();
 		}
 	})
 });
@@ -179,28 +177,38 @@ $('.myMovie').click(function(e) {
 ****************************************************/
 
 function populateInitialPage() {
-		getjson('https://initial-movies.firebaseio.com/.json')
-		p.then(function(data) {
-		populatePage(data);
-		$('#homeBody .rowOrient').html(populateHTML);
-  		});
-	}
+	getjson('https://initial-movies.firebaseio.com/.json')
+	p.then(function(data) {
+	populatePage(data);
+	$('#homeBody .rowOrient').html(populateHTML);
+  	});
+}
 
 /***************************************************
 	FUNCTION FOR POPULATING MY MOVIES FROM FIREBASE
 ****************************************************/
 
 function populateMyMoviesPage() {
-	getjson('https://user-enter-luke.firebaseio.com/.json')
+	getjson('https://user-enter-luke.firebaseio.com/users.json')
 	p.then(function(data) {
+		moviesAdded = [];
 		if (data !== null) {
-			console.log(data.users)
-			for (var i = 0; i < data.users[userID].movies.length; i++) {
-				console.log(data)
-				moviesAdded.push(data.users[userID].movies[i])
+			for (var i = 0; i < data[userID].movies.length; i++) {
+				moviesAdded.push(data[userID].movies[i])
 			}
 		}
-  	});
+	$(document).click(function(e) {
+		if (e.target.className === "add btn btn-primary") {
+			addMovie(e);
+		}
+	});
+	$(document).click(function(e) {
+		if (e.target.className === "remove btn btn-danger") {
+			removeMovie(e);
+		}
+	});
+
+	});
 }
 /***************************************************
 		FUNCTIONS FOR STORING USER INFO
@@ -208,16 +216,18 @@ function populateMyMoviesPage() {
 
 function saveNewUser() {
     var user = {};
-    user[userID] = {
-                     movies : moviesAdded
-                     }
+    user = {
+            movies : moviesAdded,
+            email: currentUserEmail
+            }
     console.log(user)
     var p2 = new Promise(function(resolve,reject) {
         $.ajax({
-            type: 'PATCH',
-            url: 'https://user-enter-luke.firebaseio.com/users.json',
+            type: 'PUT',
+            url: `https://user-enter-luke.firebaseio.com/users/${userID}.json`,
             data: JSON.stringify(user),
             success: function(response) {
+            	$('.save').hide('slow');
                 $('#savedPopUp').show('slow')
                 setTimeout(function() {
                     $('#savedPopUp').hide('slow')
@@ -238,45 +248,53 @@ function returnMovieID(obj, ID) {
 }
 
 function addMovie(e) {
-var count = 0
-
-    movieID = returnMovieID(data, 'imdbID');
-    console.log(movieID)
-    for (var i = 0; i < moviesAdded.length; i++) {
+	getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id);
+    p.then(function(data) {
+    	console.log(data)
+    	var count = 0
+	    movieID = returnMovieID(data, 'imdbID');
+	for (var i = 0; i < moviesAdded.length; i++) {
         checkID = returnMovieID(moviesAdded[i], 'imdbID');
         if (checkID === movieID) {
             count += 1;
         }
-
     }
     if (count === 0) {
         moviesAdded.push(data)
     } else {
         console.log("Did not add movie")
     }
+    })
 }
 
-
-
-
 function removeMovie(e) {
-    // $(e.target.parentElement.parentElement.parentElement).addClass('animated zoomOutLeft')
-    var count = 0
-    movieID = returnMovieID(data, 'imdbID');
-
-    for (var i = 0; i < moviesAdded.length; i++) {
-        checkID = returnMovieID(moviesAdded[i], 'imdbID');
-        if (checkID != movieID) {
-            count += 1;
-        }
-        if (checkID === movieID) {
-        moviesAdded.splice(count, 1);
-        console.log(moviesAdded)
-        console.log("removed movie")
-        } else {
-            console.log("Could not find")
-        }
-    }
+    getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id)
+    console.log(e.target.offsetParent.id)
+    p.then(function(data) {
+    	data = data
+    }).then( function() {
+	    console.log(data);	    
+	    console.log(moviesAdded.indexOf(data));
+	    var count = 0
+	    movieID = returnMovieID(data, 'imdbID');
+	    $(e.target.offsetParent).addClass('animated zoomOutLeft');
+	    setTimeout(function() {
+	    $(e.target.offsetParent).hide();
+	    },1500)
+	    for (var i = 0; i < moviesAdded.length; i++) {
+	        checkID = returnMovieID(moviesAdded[i], 'imdbID');
+	        if (checkID != movieID) {
+	            count += 1;
+	        }
+	        if (checkID === movieID) {
+	        moviesAdded.splice(count, 1);
+	        console.log(moviesAdded);
+	        console.log("removed movie");
+	        } else {
+	      		
+	        }
+	    }
+	})
 }
 
 function searchMovie() {
@@ -290,6 +308,10 @@ function searchMovie() {
 		currentMovies.push(searchData);
 		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
+	}).catch(function(error) {
+		populateHTML = 'Could not find movie'
+		$('#searchView .rowOrient').html(populateHTML);
+		console.log(error + 'hey')
 	});
 };
 
@@ -300,43 +322,64 @@ function searchMovie() {
 $('.searchBtn').click(searchMovie);
 $('.save').click(saveNewUser);
 $('.movie-viewed').click(function() {
-	console.log($('.movie-viewed'))
+	console.log($('.movie-viewed'));
 });
+
 $(document).click(function(e) {
 	if (e.target.className === "add btn btn-primary") {
-		addMovie();
+		addMovie(e);
+		$('.save').show();
+	} else if (e.target.className === "btn btn-primary toggle-on") {
+		watchedMovie = false;
+		console.log(watchedMovie)
 	}
 });
+
 $(document).click(function(e) {
 	if (e.target.className === "remove btn btn-danger") {
-		removeMovie();
+		removeMovie(e);
+		$('.save').show();
+	} else if (e.target.className === "btn btn-default active toggle-off") {
+		watchedMovie = true;
+		console.log(watchedMovie)
 	}
 });
+
+$("#signOut").click((e) => {
+  firebase.auth().signOut().then(()=> {
+  	$(".logout").addClass('hidden');
+  })
+})
+
+$('.plot').mouseover(function(e){
+	console.log(e)
+	$(this).addClass('plotMO');
+})
+
+$('.plot').mouseleave(function(e){
+	$(this).removeClass('plotMO');
+})
 
 /*******************************************
 			FIREBASE LOG INFO
 ********************************************/
 
- 
-setTimeout(()=>console.log(firebase.auth().currentUser), 1000)
-
 firebase.auth().onAuthStateChanged(()=> {
   if (firebase.auth().currentUser !== null) {
-    // var email = firebase.auth().currentUser.email
     $(".loginpage").addClass("hidden");
 	$(".logout").removeClass("hidden");
 	userID = firebase.auth().currentUser.uid;
 	currentUserEmail = firebase.auth().currentUser.email;
-	$('#signOut').text(`Sign Out ${currentUserEmail.slice('@', 4)}`)
-	populateMyMoviesPage();
-	$(".logout").addClass("hidden");
+	$('#signOut').text(`Sign Out ${currentUserEmail.slice(0, currentUserEmail.indexOf('@'))}`)
+	$('#greet').text(`Welcome ${currentUserEmail.slice(0, currentUserEmail.indexOf('@'))}!`)
+	populateMyMoviesPage()
+	p.then(() => {
+		populatePage(moviesAdded)
+		$('#myMovies .rowOrient').html(populateHTML);
+		// $('#myMovies').show()
+	});
   }
 })
-
-
-
-
-
 
 $(".loginpage form").submit((e)=> {
 
@@ -353,7 +396,6 @@ $(".loginpage form").submit((e)=> {
     var fullError = `${errorCode}: ${errorMessage}`
     alert(fullError)
   });
-	console.log(firebase.auth().currentUser)
 	e.preventDefault();
 });
 
@@ -365,6 +407,7 @@ $("#register").click((e)=> {
   firebase.auth().createUserWithEmailAndPassword(email, pass).then(()=> {
     $('input[type="email"]').val(``);
     $('input[type="password"]').val(``);
+    $('#searchView').show();
   }).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
@@ -373,13 +416,4 @@ $("#register").click((e)=> {
     alert(fullError)
   });
   e.preventDefault();
-
 });
-
-
-$("#signOut").click((e) => {
-  firebase.auth().signOut().then(()=> {
-  	moviesAdded = [];
-    console.log(firebase.auth().currentUser);
-  })
-})
