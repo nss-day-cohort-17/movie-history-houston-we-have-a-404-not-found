@@ -1,12 +1,13 @@
 body {
 font-family: 'Righteous', cursive;
 padding-top: 100px;
-background: 
+/*background: 
     radial-gradient( 
       rgba(255, 255, 255, 0.75), 
       rgba(255, 255, 255, 0.79)
     ), center/cover no-repeat fixed
-    url('http://authors.appadvice.com/wp-content/appadvice-v2-media/2015/08/Popcorn-Movies_fc3538c493404ecf8c7071a2641b3626.jpg');
+    url('http://authors.appadvice.com/wp-content/appadvice-v2-media/2015/08/Popcorn-Movies_fc3538c493404ecf8c7071a2641b3626.jpg');*/
+background:   rgb(255,255,102)
 }
 
 .movieHist {
@@ -19,7 +20,7 @@ font-family: 'Cabin Sketch', cursive;
 .topborder {
   border-bottom: 3px solid #71a8a8;
   /*background: rgba(0,0,0, .2);*/
-    background: rgba(255,255,255, 1)
+    background: rgba(255,255,255, .95)
 }
 
 .topSpacer {
@@ -93,7 +94,7 @@ a:link {
   width: 75px;
   border-radius: 50%;
   background-color: black;
-  border: 2px solid black;
+box-shadow: 5px 5px 20px yellow;
 }
 
 .card {
@@ -223,7 +224,7 @@ a:link {
 }
 
 #greet {
-  font-size: 20px;
+  font-size: 25px;
    color: #d9534f;
 }
 
