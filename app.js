@@ -15,6 +15,7 @@
 
 var p;
 var moviesAdded = [];
+var moviesViewed = [];
 var data;
 let populateHTML;
 var currentMovies = [];
@@ -113,11 +114,11 @@ $('#myMovies').hide();
 $('#savedPopUp').hide()
 $('#nothing').hide()
 $('.search').click(function(e) {
+	$('.add').addClass('hidden')
 
 firebase.auth().onAuthStateChanged(()=> {
 
 	if (firebase.auth().currentUser !== null) {
-		// var email = firebase.auth().currentUser.email
 		$(".loginpage").addClass("hidden");
 		$(".logout").removeClass("hidden");
 	}else {
@@ -144,14 +145,14 @@ $('.home').click(function(e) {
 		}
 	})
 	$('#myMovies').hide();
-	$('#searchView').hide('slow');
+	$('#searchView').hide();
 	$('#homeBody').show();
 	populateInitialPage();
 });
 
 
 $('.myMovie').click(function(e) {
-	$('#searchView').hide('slow');
+	$('#searchView').hide();
 	$('#homeBody').hide();
 
 	firebase.auth().onAuthStateChanged(()=> {
@@ -250,9 +251,9 @@ function returnMovieID(obj, ID) {
 function addMovie(e) {
 	getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id);
     p.then(function(data) {
-    	console.log(data)
     	var count = 0
 	    movieID = returnMovieID(data, 'imdbID');
+	    console.log(e)
 	for (var i = 0; i < moviesAdded.length; i++) {
         checkID = returnMovieID(moviesAdded[i], 'imdbID');
         if (checkID === movieID) {
@@ -269,7 +270,6 @@ function addMovie(e) {
 
 function removeMovie(e) {
     getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id)
-    console.log(e.target.offsetParent.id)
     p.then(function(data) {
     	data = data
     }).then( function() {
@@ -305,11 +305,18 @@ function searchMovie() {
 	p.then(function(val) {		
 		searchData = val;
 	}).then(function() {
-		currentMovies.push(searchData);
+		console.log(searchData)
+		if (searchData.Response !== "False") {
+			currentMovies.push(searchData);
 		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
+		} else {
+		populateHTML = '<h1 id="notMovie">Movie Not Found!</h1>'
+		$('#searchView .rowOrient').html(populateHTML);
+		console.log(error + 'hey')
+		}
 	}).catch(function(error) {
-		populateHTML = 'Could not find movie'
+		populateHTML = '<h1 id="notMovie">Movie Not Found!</h1>'
 		$('#searchView .rowOrient').html(populateHTML);
 		console.log(error + 'hey')
 	});
@@ -321,17 +328,19 @@ function searchMovie() {
 
 $('.searchBtn').click(searchMovie);
 $('.save').click(saveNewUser);
-$('.movie-viewed').click(function() {
-	console.log($('.movie-viewed'));
-});
 
 $(document).click(function(e) {
 	if (e.target.className === "add btn btn-primary") {
 		addMovie(e);
 		$('.save').show();
 	} else if (e.target.className === "btn btn-primary toggle-on") {
+		getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.offsetParent.offsetParent.offsetParent.id)
+    p.then(function(data) {
+    	data = data
+    	console.log(data)
+    })
 		watchedMovie = false;
-		console.log(watchedMovie)
+		moviesViewed.splice(indexOf(data), 1);
 	}
 });
 
@@ -340,8 +349,12 @@ $(document).click(function(e) {
 		removeMovie(e);
 		$('.save').show();
 	} else if (e.target.className === "btn btn-default active toggle-off") {
+		getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.offsetParent.offsetParent.offsetParent.id)
+    p.then(function(data) {
+    	data = data
+    })
 		watchedMovie = true;
-		console.log(watchedMovie)
+		moviesViewed.push(data);
 	}
 });
 
