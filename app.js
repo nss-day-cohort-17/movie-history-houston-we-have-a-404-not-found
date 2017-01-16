@@ -15,6 +15,7 @@
 
 var p;
 var moviesAdded = [];
+var moviesViewed = [];
 var data;
 let populateHTML;
 var currentMovies = [];
@@ -48,18 +49,18 @@ function getjson(url) {
 	})
 }
 
-
-
 function populatePage(myArray) {
   		populateHTML = '';
   		for (var i = 0; i < myArray.length; i++) {
+  			if (moviesViewed.includes(myArray[i].imdbID) === false) {
+  			console.log(myArray[i].imdbID)
   			 populateHTML += `
-			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  			 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   			 <div id="${myArray[i].imdbID}" class="animated fadeInLeft col-xs-1 card topborder">
 				<div class="titlebox">
 					<h3>${myArray[i].Title}</h3>
 				</div>
-				<p>${myArray[i].Year}</p>
+				<p id="year">${myArray[i].Year}</p>
 				<div class="imageBlock">
 					<img class="imageStyle"src="${myArray[i].Poster}">
 				</div>
@@ -93,6 +94,49 @@ function populatePage(myArray) {
 				</div>
 			</div>
 			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
+  			} else if (moviesViewed.includes(myArray[i].imdbID) === true){
+  				 populateHTML += `
+  			 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  			 <div id="${myArray[i].imdbID}" class="animated fadeInLeft col-xs-1 card topborder">
+				<div class="titlebox">
+					<h3>${myArray[i].Title}</h3>
+				</div>
+				<p id="year">${myArray[i].Year}</p>
+				<div class="imageBlock">
+					<img class="imageStyle"src="${myArray[i].Poster}">
+				</div>
+				<div class="actorbox">
+					<h4>${myArray[i].Actors}</h4>
+				</div>
+				<div class="plot">
+					${myArray[i].Plot}
+				</div>
+				<div class="bottomBar">
+					<div class="viewbar">
+						<div class="checkbox">
+						  <label>
+						    <input class="movie-viewed" type="checkbox" data-toggle="toggle" data-on="Viewed✓" data-off="Not Viewed" checked>
+						  </label>
+						</div>
+					</div>
+					<div class="ratings">
+					<h4>${myArray[i].imdbRating}
+					<img class="star" src="images/star.png"></h4>
+
+					</div>
+				</div>
+				<div class="addRemove">
+					<div class="addButton">
+						<button class="add btn btn-primary">add</button>
+					</div>
+					<div class="deleteButton">
+						<button class="remove btn btn-danger">remove</button>
+					</div>
+				</div>
+			</div>
+			<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>`;
+  			}
+			
   	}
 }
 
@@ -113,11 +157,11 @@ $('#myMovies').hide();
 $('#savedPopUp').hide()
 $('#nothing').hide()
 $('.search').click(function(e) {
+	$('.add').addClass('hidden')
 
 firebase.auth().onAuthStateChanged(()=> {
 
 	if (firebase.auth().currentUser !== null) {
-		// var email = firebase.auth().currentUser.email
 		$(".loginpage").addClass("hidden");
 		$(".logout").removeClass("hidden");
 	}else {
@@ -144,14 +188,14 @@ $('.home').click(function(e) {
 		}
 	})
 	$('#myMovies').hide();
-	$('#searchView').hide('slow');
+	$('#searchView').hide();
 	$('#homeBody').show();
 	populateInitialPage();
 });
 
 
 $('.myMovie').click(function(e) {
-	$('#searchView').hide('slow');
+	$('#searchView').hide();
 	$('#homeBody').hide();
 
 	firebase.auth().onAuthStateChanged(()=> {
@@ -172,9 +216,16 @@ $('.myMovie').click(function(e) {
 });
 
 
+
 /***************************************************
 	FUNCTION FOR INITIALLY SHOWING MOVIES
 ****************************************************/
+
+function populateViewedMovies() {
+	for (var i = 0; i < data[userID].watchedMovies.length; i++) {
+				moviesViewed.push(data[userID].watchedMovies[i]);
+	}
+}
 
 function populateInitialPage() {
 	getjson('https://initial-movies.firebaseio.com/.json')
@@ -192,9 +243,13 @@ function populateMyMoviesPage() {
 	getjson('https://user-enter-luke.firebaseio.com/users.json')
 	p.then(function(data) {
 		moviesAdded = [];
+		moviesViewed = [];
 		if (data !== null) {
+		for (var i = 0; i < data[userID].watchedMovies.length; i++) {
+				moviesViewed.push(data[userID].watchedMovies[i]);
+			}
 			for (var i = 0; i < data[userID].movies.length; i++) {
-				moviesAdded.push(data[userID].movies[i])
+				moviesAdded.push(data[userID].movies[i]);
 			}
 		}
 	$(document).click(function(e) {
@@ -218,6 +273,7 @@ function saveNewUser() {
     var user = {};
     user = {
             movies : moviesAdded,
+            watchedMovies : moviesViewed,
             email: currentUserEmail
             }
     console.log(user)
@@ -250,9 +306,9 @@ function returnMovieID(obj, ID) {
 function addMovie(e) {
 	getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id);
     p.then(function(data) {
-    	console.log(data)
     	var count = 0
 	    movieID = returnMovieID(data, 'imdbID');
+	    console.log(e)
 	for (var i = 0; i < moviesAdded.length; i++) {
         checkID = returnMovieID(moviesAdded[i], 'imdbID');
         if (checkID === movieID) {
@@ -269,12 +325,9 @@ function addMovie(e) {
 
 function removeMovie(e) {
     getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.id)
-    console.log(e.target.offsetParent.id)
     p.then(function(data) {
     	data = data
     }).then( function() {
-	    console.log(data);	    
-	    console.log(moviesAdded.indexOf(data));
 	    var count = 0
 	    movieID = returnMovieID(data, 'imdbID');
 	    $(e.target.offsetParent).addClass('animated zoomOutLeft');
@@ -288,11 +341,7 @@ function removeMovie(e) {
 	        }
 	        if (checkID === movieID) {
 	        moviesAdded.splice(count, 1);
-	        console.log(moviesAdded);
-	        console.log("removed movie");
-	        } else {
-	      		
-	        }
+	        } 
 	    }
 	})
 }
@@ -305,11 +354,18 @@ function searchMovie() {
 	p.then(function(val) {		
 		searchData = val;
 	}).then(function() {
-		currentMovies.push(searchData);
+		console.log(searchData)
+		if (searchData.Response !== "False") {
+			currentMovies.push(searchData);
 		populatePage(currentMovies);
 		$('#searchView .rowOrient').html(populateHTML);
+		} else {
+		populateHTML = '<h1 id="notMovie">Movie Not Found!</h1>'
+		$('#searchView .rowOrient').html(populateHTML);
+		console.log(error + 'hey')
+		}
 	}).catch(function(error) {
-		populateHTML = 'Could not find movie'
+		populateHTML = '<h1 id="notMovie">Movie Not Found!</h1>'
 		$('#searchView .rowOrient').html(populateHTML);
 		console.log(error + 'hey')
 	});
@@ -321,17 +377,21 @@ function searchMovie() {
 
 $('.searchBtn').click(searchMovie);
 $('.save').click(saveNewUser);
-$('.movie-viewed').click(function() {
-	console.log($('.movie-viewed'));
-});
 
 $(document).click(function(e) {
 	if (e.target.className === "add btn btn-primary") {
 		addMovie(e);
 		$('.save').show();
 	} else if (e.target.className === "btn btn-primary toggle-on") {
-		watchedMovie = false;
-		console.log(watchedMovie)
+		getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.offsetParent.offsetParent.offsetParent.id)
+    p.then(function(data) {
+    	data = data
+    	console.log(data)
+    }).then(function() {
+    	watchedMovie = false;
+		moviesViewed.splice(moviesViewed.indexOf(data.imdbID), 1);
+		$('.save').show();
+    })
 	}
 });
 
@@ -340,8 +400,14 @@ $(document).click(function(e) {
 		removeMovie(e);
 		$('.save').show();
 	} else if (e.target.className === "btn btn-default active toggle-off") {
-		watchedMovie = true;
-		console.log(watchedMovie)
+		getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.offsetParent.offsetParent.offsetParent.id)
+    p.then(function(data) {
+    	data = data
+    }).then(function() {
+    	watchedMovie = true;
+		moviesViewed.push(data.imdbID);
+		$('.save').show();
+    })
 	}
 });
 
