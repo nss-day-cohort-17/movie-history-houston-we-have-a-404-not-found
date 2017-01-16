@@ -53,7 +53,6 @@ function populatePage(myArray) {
   		populateHTML = '';
   		for (var i = 0; i < myArray.length; i++) {
   			if (moviesViewed.includes(myArray[i].imdbID) === false) {
-  			console.log(myArray[i].imdbID)
   			 populateHTML += `
   			 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   			 <div id="${myArray[i].imdbID}" class="animated fadeInLeft col-xs-1 card topborder">
@@ -308,7 +307,6 @@ function addMovie(e) {
     p.then(function(data) {
     	var count = 0
 	    movieID = returnMovieID(data, 'imdbID');
-	    console.log(e)
 	for (var i = 0; i < moviesAdded.length; i++) {
         checkID = returnMovieID(moviesAdded[i], 'imdbID');
         if (checkID === movieID) {
@@ -317,8 +315,6 @@ function addMovie(e) {
     }
     if (count === 0) {
         moviesAdded.push(data)
-    } else {
-        console.log("Did not add movie")
     }
     })
 }
@@ -386,7 +382,6 @@ $(document).click(function(e) {
 		getjson('http://www.omdbapi.com/?i=' + e.target.offsetParent.offsetParent.offsetParent.offsetParent.id)
     p.then(function(data) {
     	data = data
-    	console.log(data)
     }).then(function() {
     	watchedMovie = false;
 		moviesViewed.splice(moviesViewed.indexOf(data.imdbID), 1);
