@@ -8,7 +8,6 @@
   };
   firebase.initializeApp(config);
 
-
 /***************************************************
 				GLOBAL VARIABLES
 ****************************************************/
@@ -244,11 +243,11 @@ function populateMyMoviesPage() {
 		moviesAdded = [];
 		moviesViewed = [];
 		if (data !== null) {
+		for (var i = 0; i < data[userID].movies.length; i++) {
+				moviesAdded.push(data[userID].movies[i]);
+			}
 		for (var i = 0; i < data[userID].watchedMovies.length; i++) {
 				moviesViewed.push(data[userID].watchedMovies[i]);
-			}
-			for (var i = 0; i < data[userID].movies.length; i++) {
-				moviesAdded.push(data[userID].movies[i]);
 			}
 		}
 	$(document).click(function(e) {
@@ -409,6 +408,7 @@ $(document).click(function(e) {
 $("#signOut").click((e) => {
   firebase.auth().signOut().then(()=> {
   	$(".logout").addClass('hidden');
+  	moviesViewed = [];
   })
 })
 
